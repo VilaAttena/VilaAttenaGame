@@ -7,28 +7,53 @@ $(document).ready(function() {
 	}
 
 	function Update() {
-		if(!player.profile.isOn && !npc.dialogue.isOn) {
+		if(!player.profile.isOn && !npc.dialogue.isOn && !puzzle.isOn) {
 			player.searchNPC();
 			cam.move();
 			player.move();
+			player.levelUp();				
 		}
+
+ 		if(puzzle.isOn) {
+ 			if(npc.array[player.searchNPC()].name == "Heloisa") {
+ 				puzzle.puzzlePong.movePlayer();
+ 				puzzle.puzzlePong.moveEnemy();
+ 				puzzle.puzzlePong.moveBall();
+ 				puzzle.puzzlePong.colide();
+ 				puzzle.puzzlePong.gameOver();
+ 			} else if(npc.array[player.searchNPC()].name == "Jorge") {
+ 				puzzle.puzzleFishing.movePlayer();
+ 				puzzle.puzzleFishing.updateFish(); 				
+ 			}
+		}		
 	}
 
 	function Render() {
-		if(!player.profile.isOn && !npc.dialogue.isOn) {
-			ctx.clearRect(0, 0, canvas.width(), canvas.height());
+		if(!player.profile.isOn && !npc.dialogue.isOn) {			
 			ctx.save();
 			ctx.translate(-cam.x, -cam.y);
-			scenario.drawTiles();
 			cam.x = Math.max(0,Math.min(scenario.width - cam.width,cam.x));
 			cam.y = Math.max(0,Math.min(scenario.height - cam.height,cam.y));					
+			scenario.drawTiles();
 			npc.draw();	
 			player.draw();				
-			npc.questionMark.draw();			
-			ctx.restore();			
-		} if(player.profile.isOn) {
+			ctx.restore();
+			if(!puzzle.isOn) {
+				npc.infoNPC.draw();			
+			}	
+		} 
+ 		if(puzzle.isOn) {
+			if(npc.array[player.searchNPC()].name == "Jorge") {
+				puzzle.puzzleFishing.draw();
+				puzzle.puzzleFishing.drawFish();		
+			} else if(npc.array[player.searchNPC()].name == "Heloisa") {
+				puzzle.puzzlePong.draw();
+			}
+		}		
+		if(player.profile.isOn) {
 			player.profile.draw();
-		} if(npc.dialogue.isOn) {
+		} 
+		if(npc.dialogue.isOn) {
 			npc.dialogue.draw();
 		}
 	}
@@ -49,10 +74,14 @@ $(document).ready(function() {
 	}	
 
 	function LoadImages() {
+		this.dialogue_background = new Image();
+		this.dialogue_background.src = "./imgs/dialogue_background.png";		
 		this.grama_solo = new Image();
 		this.grama_solo.src = "./imgs/grama_solo.png";
 		this.terra_solo = new Image();
 		this.terra_solo.src = "./imgs/terra_solo.png";
+		this.agua_solo = new Image();
+		this.agua_solo.src = "./imgs/agua_solo.png";	
 		this.grama2 = new Image();
 		this.grama2.src = "./imgs/grama2.png";
 		this.grama3 = new Image();
@@ -62,40 +91,100 @@ $(document).ready(function() {
 		this.grama5 = new Image();
 		this.grama5.src = "./imgs/grama5.png";
 		this.grama6 = new Image();
-		this.grama6.src = "./imgs/grama6.png";							
+		this.grama6.src = "./imgs/grama6.png";
+		this.flower = new Image();
+		this.flower.src = "./imgs/flower.png";
+		this.fence_left = new Image();
+		this.fence_left.src = "./imgs/fence_left.png";
+		this.fence_solo = new Image();
+		this.fence_solo.src = "./imgs/fence_solo.png";
+		this.bowie = new Image();
+		this.bowie.src = "./imgs/bowie.png";
+		this.sarah = new Image();
+		this.sarah.src = "./imgs/sarah.png";
+		this.jaha = new Image();
+		this.jaha.src = "./imgs/jaha.png";
+		this.taya = new Image();
+		this.taya.src = "./imgs/taya.png";
+		this.chaz = new Image();
+		this.chaz.src = "./imgs/chaz.png";																								
 	}
 
 	$(document).keydown(function(e){
 		switch(e.which) {
+			case 37:				
+				player.moveLeft = true;
+				if(puzzle.isOn) {
+					puzzle.playerMoveLeft = true;
+					break;
+				}				
+				break;
+			case 38:				
+				player.moveUp = true;
+				if(puzzle.isOn) {
+					puzzle.playerMoveUp = true;
+					break;
+				}				
+				break;
+			case 39:				
+				player.moveRight = true;
+				if(puzzle.isOn) {
+					puzzle.playerMoveRight = true;
+					break;
+				}								
+				break;
+			case 40:				
+				player.moveDown = true;
+				if(puzzle.isOn) {
+					puzzle.playerMoveDown = true;
+					break;
+				}				
+				break;
+
 			case 13:
-				if(!player.profile.isOn && !npc.dialogue.isOn) {
+				if(!player.profile.isOn && !npc.dialogue.isOn && !puzzle.isOn) {
 					player.profile.isOn = true;
 					break;
 				} else {
 					player.profile.isOn = false;
 					break;
-				}
-			case 37:
-				player.moveLeft = true;
-				break;
-			case 38:
-				player.moveUp = true;
-				break;
-			case 39:
-				player.moveRight = true;
-				break;
-			case 40:
-				player.moveDown = true;
-				break;
+				}				
+
 			case 81:
-				player.checkPosition();
-				if(player.searchNPC() != null && !npc.dialogue.isOn && !player.profile.isOn) {
-					npc.dialogue.isOn = true;
-					break;
+				if(!npc.dialogue.isOn && !player.profile.isOn && !puzzle.isOn && npc.array[player.searchNPC()] != null) {
+					if(!player.moveLeft && !player.moveUp && !player.moveRight && !player.moveDown) {
+						npc.dialogue.isOn = true;
+						break;
+					}
 				} 
 				if(npc.dialogue.isOn) {
 					npc.dialogue.isOn = false;
 					break;
+				}				
+
+			case (!puzzle.isOn):
+				case 83:
+					if(npc.dialogue.isOn && npc.array[player.searchNPC()].hasPuzzle) {
+						puzzle.isOn = true;
+						npc.dialogue.isOn = false;
+						if(npc.array[player.searchNPC()].name == "Jorge") {
+							puzzle.puzzleFishing.addFish();
+						}
+						break;
+					}
+				break;
+
+			case (!puzzle.isOn):
+				case 78:
+					if(npc.dialogue.isOn && npc.array[player.searchNPC()].hasPuzzle) {
+						npc.dialogue.isOn = false;
+						break;
+					}
+				break;
+
+			case 27:
+				if(puzzle.isOn) {
+					puzzle.isOn = false;						
 				}
 		}
 	})
@@ -104,33 +193,50 @@ $(document).ready(function() {
 		switch(e.which) {
 			case 37:
 				player.moveLeft = false;
+				if(puzzle.isOn) {
+					puzzle.playerMoveLeft = false;
+					break;
+				}					
 				break;
 			case 38:
 				player.moveUp = false;
+				if(puzzle.isOn) {
+					puzzle.playerMoveUp = false;
+					break;
+				}				
 				break;
 			case 39:
 				player.moveRight = false;
+				if(puzzle.isOn) {
+					puzzle.playerMoveRight = false;
+					break;
+				}					
 				break;
 			case 40:
 				player.moveDown = false;
+				if(puzzle.isOn) {
+					puzzle.playerMoveDown = false;
+					break;
+				}				
 				break;
 		}
 	})	
 
 	class Player {
 		constructor() {
-			this.name = "Leonardo";
+			this.name = "Cecil";
 			this.x = 310;
 			this.y = 200;
 			this.width = 25;
 			this.height = 25;
 			this.level = 0;
+			this.actualXp = 0;
 			this.levelMath = 0;
 			this.levelPhysicalEducation = 0;
 			this.levelEnglish = 0;
 			this.color = "Black";
 			this.speed = 8;
-			this.moveLeft = this.moveUp = this.moveRight = this.moveDown = false;			
+			this.moveLeft = this.moveUp = this.moveRight = this.moveDown = false;					
 			this.talking = false;
 		}
 
@@ -153,20 +259,23 @@ $(document).ready(function() {
 			}
 		}
 
+		levelUp() {
+			if(this.actualXp >= 100) {
+				this.level += 1;
+				this.actualXp = 0;
+			}
+		}
+
 		searchNPC() {
 			for(var i = 0; i < npc.array.length; i++) {
 				this.currentNPC = npc.array[i];
 				if(this.x + this.width + 10 >= this.currentNPC.x &&
 					this.x - 10 <= this.currentNPC.x + this.currentNPC.width &&
 					this.y + this.height + 10 >= this.currentNPC.y &&
-					this.y - 10 <= this.currentNPC.y + this.currentNPC.height) {																			
+					this.y - 10 <= this.currentNPC.y + this.currentNPC.height) {																					
 					return [npc.array.indexOf(this.currentNPC)];
 				}
 			}
-		}
-
-		checkPosition() {
-			alert(this.x + ' , ' + this.y);
 		}
 	}
 
@@ -198,12 +307,12 @@ $(document).ready(function() {
 			//Desenhando a div das informações do personagem
 			ctx.strokeRect(this.x + 110, this.y + 5, 485, 100);
 			ctx.font = "30px Cursive";
-			ctx.fillText("Nome", this.x + 300, this.y + 40);
-			ctx.fillText(player.name, this.x + 285, this.y + 80);
-			ctx.fillText("Nome", this.x + 300, this.y + 40);
-			ctx.fillText(player.name, this.x + 285, this.y + 80);
+			ctx.fillText("Nome", this.x + 200, this.y + 40);
+			ctx.fillText(player.name, this.x + 230, this.y + 80);
 			ctx.fillText("Nível", this.x + 480, this.y + 40);
-			ctx.fillText(player.level, this.x + 420, this.y + 80);
+			ctx.fillText(player.level, this.x + 530, this.y + 40);
+			ctx.fillText("XP: ", this.x + 480, this.y + 80);
+			ctx.fillText(player.actualXp, this.x + 530, this.y + 80);
 			//Desenhando a div inventário do personagem
 			ctx.strokeRect(this.x + 180, this.y + 110, 415, 270);
 			//Desenhando a div da Generosidade do personagem
@@ -212,7 +321,7 @@ $(document).ready(function() {
 	}
 
 	class NPC {
-		constructor(name ,message, color, x, y, width, height) {
+		constructor(name ,message, color, x, y, width, height, img, profession, friendlyLevel, hasPuzzle) {
 			this.name = name;
 			this.message = message;
 			this.color = color;
@@ -220,15 +329,95 @@ $(document).ready(function() {
 			this.y = y;
 			this.width = width;
 			this.height = height;
+			this.img = img;
+			this.profession = profession;
+			this.friendlyLevel = friendlyLevel;
+			this.hasPuzzle = hasPuzzle;
 			this.array = [];
 		}
 
 		add() {
-			this.array.push(new NPC("Mãe", "Divirta-se, " + player.name + "!", "Pink", 275, 200, 25, 25));
-			this.array.push(new NPC("Mario", "Olá, " + player.name + ", bom dia!", "Green", 400, 270, 25, 25));
-			this.array.push(new NPC("Sofia", "Oi, " + player.name + ", tudo bem?", "Red", 200, 500, 25, 25));
-			this.array.push(new NPC("Bruno", "Bom dia!", "Purple", 800, 900, 25, 25));
-			this.array.push(new NPC("Pescador Jorge", "Bom dia, " + player.name + "! É um lindo dia para pescar, não acha?", "Orange", 1452, 1575, 25, 25));
+				//Nome
+				//Mensagem
+				//Cor
+				//Posição em X
+				//Posição em Y
+				//Largura
+				//Altura
+				//Imagem
+				//Profissão
+				//Nível de amizade
+				//Precisa de ajuda?
+
+			this.array.push(new NPC(
+				"Heloisa", 
+				"Oi, " + player.name + ", quer brincar comigo?", 
+				"DodgerBlue", 
+				400, 
+				100, 
+				25, 
+				25, 
+				img.taya,
+				"",
+				"1",
+				true
+			));
+
+			this.array.push(new NPC(
+				"Mario", 
+				"Olá, " + player.name + ", bom dia!", 
+				"Green", 
+				400, 
+				270, 
+				25, 
+				25, 
+				img.bowie,
+				"Agricultor",
+				"1",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Sofia", 
+				"Oi, " + player.name + ", tudo bem?", 
+				"Red", 
+				200, 
+				500, 
+				25, 
+				25, 
+				img.sarah,
+				"Comerciante",
+				"1",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Bruno", 
+				"Bom dia!",
+				"Purple",
+				800, 
+				900, 
+				25, 
+				25, 
+				img.jaha,
+				"Caçador",
+				"1",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Jorge", 
+				"Bom dia, " + player.name + "! Gostaria de me ajudar a pescar?",
+				"Orange", 
+				300, 
+				300, 
+				25, 
+				25, 
+				img.chaz,
+				"Pescador",
+				"1",
+				true
+			));
 		}
 
 		draw() {
@@ -250,52 +439,79 @@ $(document).ready(function() {
 			this.isOn = false;		
 		}
 
+		answer() {
+			ctx.font = "30px Cursive";
+			ctx.fillStyle = "Green";
+			ctx.fillText("Sim (Pressione S)", 110, 510);
+			ctx.fillStyle = "Red";
+			ctx.fillText("Não (Pressione N)", 110, 550);
+		}				
+
 		draw() {
 			if(player.searchNPC() != null) {
-				ctx.fillStyle = this.bgColor;
-				ctx.fillRect(this.x, this.y, this.width, this.height);
+				DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
 				ctx.fillStyle = "Black";			
 				ctx.font = "30px Cursive";
 				ctx.textAlign = "left";
 				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 15, this.y + 30);
 				ctx.font = "25px Cursive";
-				ctx.fillText(npc.array[player.searchNPC()].message, this.x + 10, this.y + 65);				
+				ctx.fillText(npc.array[player.searchNPC()].message, this.x + 10, this.y + 65);
+				if(npc.array[player.searchNPC()].hasPuzzle) {
+					this.answer();					
+				}				
 			}
 		}
 	}
 
-	class QuestionMark {
+	class InfoNPC {
 		constructor() {
-			this.width = 10;
-			this.height = 10;
-			this.bgColor = "White";
-			this.isOn = false;
+			this.width = 400;
+			this.height = 150;
+			this.x = canvas.width() / 2 - this.width / 2;
+			this.y = 440;
+			this.bgColor = "White";			
 		}
 
 		draw() {
-			if(player.searchNPC() != null) {
-				DrawRect(this.bgColor, npc.array[player.searchNPC()].x + 7.5, npc.array[player.searchNPC()].y - 10, this.width, this.height);			
+			if(player.searchNPC() != null) {				
+				DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+				ctx.fillStyle = "Black";			
+				ctx.font = "25px Cursive";
+				ctx.textAlign = "left";
+				ctx.strokeRect(this.x + 5, this.y + 5, this.width - 10, 30);
+				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 15, this.y + 29);
+				ctx.strokeRect(this.x + 5, this.y + 40, this.width / 5, this.height - 45);
+				RenderImage(npc.array[player.searchNPC()].img, this.x + 5, this.y + 40, this.width / 5, this.height - 45);
+				ctx.font = "18px Cursive";
+				if(npc.array[player.searchNPC()].profession != "") {
+					ctx.fillText("Profissão: " + npc.array[player.searchNPC()].profession, 390, 495);
+					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 390, 517);
+				} else {
+					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 390, 495);
+				}
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione Q para conversar", 460, 585);
 			}		
 		}
-	}	
+	}
 
 	class Scenario {
 		constructor() {
 			this.tileSize = 25;			
 			this.map = [
 				[11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11],
-				[11,18,18,18,18,18,18,18,18,18,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,26,26,26,26,26,18,18,18,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,18,18,18,18,18,18,18,18,18,22,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,13,13,13,13,13,13,13,18,23,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,13,13,13,13,13,13,13,25,23,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,13,17,17,17,17,17,13,24,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,13,13,13,13,13,13,13,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,14,14,14,14,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,14,16,14,14,14,16,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,14,14,14,15,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,18,14,14,14,15,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,25,22,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,18,22,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,25,25,25,27,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
@@ -412,7 +628,7 @@ $(document).ready(function() {
 					this.tile = this.map[this.row][this.col];
 					if(this.tile == 10) {
 						//Terra					
-						DrawRect("#DEB887", this.x, this.y, this.tileSize, this.tileSize);
+						DrawRect("#e9d8b1", this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 11) {
 						//Barreiras nas margens						
 						DrawRect("#2E8B57", this.x, this.y, this.tileSize, this.tileSize);
@@ -449,7 +665,7 @@ $(document).ready(function() {
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 20) {
 						//Água						
-						DrawRect("Blue", this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.agua_solo, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 21) {
 						//Grama						
@@ -465,11 +681,245 @@ $(document).ready(function() {
 						RenderImage(img.grama5, this.x, this.y, this.tileSize, this.tileSize);						
 					} else if(this.tile == 25) {
 						//Grama						
-						RenderImage(img.grama6, this.x, this.y, this.tileSize, this.tileSize);						
-					}
+						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.fence_left, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);	
+					} else if(this.tile == 26) {
+						//Planta						
+						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.flower, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
+					} else if(this.tile == 27) {
+						//Planta						
+						RenderImage(img.terra_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.fence_solo, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x - 13, this.y, this.tileSize, this.tileSize);					
+					} 
 				}
 			}			
 		}
+	}
+
+	class Puzzle {
+		constructor() {			
+			this.isOn = false;
+			this.playerMoveLeft = this.playerMoveUp = this.playerMoveDown = this.playerMoveRight = false;
+		}
+	}
+
+	class PuzzleFishing {
+		constructor(fishX, fishY, fishWidth, fishHeight, fishSpeed, fishColor) {
+			this.width = 600;
+			this.height = 500;
+			this.x = canvas.width() / 2 - this.width / 2;
+			this.y = canvas.height() / 2 - this.height / 2;
+			this.bgColor = "White";
+
+			this.playerWidth = 80;
+			this.playerHeight = 30;
+			this.playerX = canvas.width() / 2 - this.playerWidth / 2;
+			this.playerY = 515;
+			this.playerSpeed = 12;
+			this.playerColor = "Black";
+			this.playerScore = 0;
+
+			this.fishWidth = fishWidth;
+			this.fishHeight = fishHeight;
+			this.fishX = fishX;
+			this.fishY = fishY;
+			this.fishSpeed = fishSpeed;
+			this.fishColor = fishColor;	
+			this.fishs = [];
+		}
+
+		addFish() {
+			setTimeout(function loop(){
+				this.random = Math.floor(Math.random() * 7);
+				switch(this.random) {
+					case 0:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Green"));
+						break;
+					case 1:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Red"));
+						break;
+					case 2:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Blue"));
+						break;
+					case 3:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Pink"));
+						break;
+					case 4:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Orange"));
+						break;
+					case 5:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Purple"));
+						break;
+					case 6:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Silver"));
+						break;
+					case 7:
+						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Gray"));
+						break;						
+				}
+				setTimeout(loop, 400);
+			}, 400)
+		}
+
+		movePlayer() {
+			if(puzzle.playerMoveLeft && this.playerX >= 215) {
+				this.playerX -= this.playerSpeed;
+			} else if(puzzle.playerMoveRight && this.playerX <= 700) {
+				this.playerX += this.playerSpeed;
+			}
+		}
+
+		updateFish() {
+			for(var i = 0; i < this.fishs.length; i++) {
+				this.currentFish = this.fishs[i];
+				this.currentFish.fishY += this.currentFish.fishSpeed;
+
+				if(this.currentFish.fishY + this.currentFish.fishHeight >= this.playerY &&
+					 this.currentFish.fishY <= this.playerY + this.playerHeight &&
+					 this.currentFish.fishX + this.currentFish.fishWidth >= this.playerX &&
+					 this.currentFish.fishX <= this.playerX + this.playerWidth) {
+					this.playerScore += 10;
+					this.fishs.splice(this.fishs.indexOf(this.currentFish), 1);					
+				}
+
+				if(this.currentFish.fishY + this.currentFish.fishHeight >= 550) {
+					
+				}
+			}
+		}
+
+		gameOver() {			
+			alert("Muito bem! Pontuação final: " + this.playerScore);
+			puzzle.isOn = false;
+			npc.array[4].hasPuzzle = false;
+			npc.array[4].message = "Obrigado, " + player.name + "! Pegamos muitos peixes hoje.";
+			player.actualXp += this.playerScore;			
+		}		
+
+		draw() {
+			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+			ctx.fillStyle = "Red";
+			ctx.font = "15px Cursive";
+			ctx.fillText("ESC para sair", this.x + this.width - 100, this.y + 15);
+			ctx.fillStyle = "Black";
+			ctx.font = "30px Cursive";
+			ctx.fillText("Pontos: " + this.playerScore, 250, this.y + 30);			
+			DrawRect(this.playerColor, this.playerX, this.playerY, this.playerWidth, this.playerHeight);
+		}
+
+		drawFish() {
+			for(var i = 0; i < this.fishs.length; i++) {
+				this.currentFish = this.fishs[i];
+				DrawRect(this.currentFish.fishColor, this.currentFish.fishX, this.currentFish.fishY, this.currentFish.fishWidth, this.currentFish.fishHeight);
+			}			
+		}
+	}
+
+	class PuzzlePong {
+		constructor() {
+			this.width = 600;
+			this.height = 500;
+			this.x = canvas.width() / 2 - this.width / 2;
+			this.y = canvas.height() / 2 - this.height / 2;
+			this.bgColor = "White";
+
+			this.playerWidth = 30;
+			this.playerHeight = 80;
+			this.playerX = 205;
+			this.playerY = canvas.height() / 2 - this.playerHeight / 2;
+			this.playerColor = "Black";
+			this.playerSpeed = 12;			
+			this.playerScore = 0;
+
+			this.ballSize = 30;
+			this.ballX = canvas.width() / 2 - this.ballSize / 2;
+			this.ballY = canvas.height() / 2 - this.ballSize / 2;
+			this.ballColor = "Black";			
+			this.ballSpeed = 3;
+			this.ballDirectionX = 0;
+			this.ballDirectionY = 0;
+
+			this.enemyWidth = 30;
+			this.enemyHeight = 30;
+			this.enemyX = 765;
+			this.enemyY = canvas.height() / 2 - this.playerHeight / 2;
+			this.enemyColor = "Black";
+		}
+
+		movePlayer() {
+			if(puzzle.playerMoveUp && this.playerY >= 60) {
+				this.playerY -= this.playerSpeed;
+			} else if(puzzle.playerMoveDown && this.playerY + this.playerHeight <= 540) {
+				this.playerY += this.playerSpeed;
+			}
+		}
+
+		moveBall() {
+			if(this.ballDirectionX == 0) {
+				this.ballX -= this.ballSpeed;				
+			} else {
+				this.ballX += this.ballSpeed;				
+			}
+			if(this.ballDirectionY == 0) {
+				this.ballY -= this.ballSpeed;
+			} else {
+				this.ballY += this.ballSpeed;
+			}
+		}
+
+		moveEnemy() {
+			this.enemyY = this.ballY;
+		}
+
+		colide() {
+			if(this.ballY <= 50) {
+				this.ballDirectionY = 1;
+			} else if(this.ballY + this.ballSize >= 550) {
+				this.ballDirectionY = 0;
+			}
+
+			if(this.ballX <= this.playerX + this.playerWidth &&
+				 this.ballX + this.ballSize >= this.playerX &&
+				 this.ballY <= this.playerY + this.playerHeight &&
+				 this.ballY + this.ballSize >= this.playerY) {
+				this.ballDirectionX = 1;
+				this.ballSpeed += 0.5;
+				this.playerScore += 10;		
+			} 
+			if(this.ballX <= this.enemyX + this.enemyWidth &&
+			   this.ballX + this.ballSize >= this.enemyX &&
+			   this.ballY <= this.enemyY + this.enemyHeight &&
+			   this.ballY + this.ballSize >= this.enemyY) {
+				this.ballDirectionX = 0;
+			}
+		}
+
+		gameOver() {
+			if(this.ballX <= 210) {
+				alert("Muito bem! Pontuação final: " + this.playerScore);
+				puzzle.isOn = false;
+				npc.array[0].hasPuzzle = false;
+				npc.array[0].message = "Valeu, " + player.name + "! Foi muito divertido.";
+				player.actualXp += this.playerScore;
+			}
+		}
+
+		draw() {
+			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+			ctx.fillStyle = "Red";
+			ctx.font = "15px Cursive";
+			ctx.fillText("ESC para sair", this.x + this.width - 100, this.y + 15);
+			ctx.fillStyle = "Black";
+			ctx.font = "30px Cursive";
+			ctx.fillText("Pontos: " + this.playerScore, 250, this.y + 30);
+			DrawRect(this.playerColor, this.playerX, this.playerY, this.playerWidth, this.playerHeight);
+			DrawRect(this.ballColor, this.ballX, this.ballY, this.ballSize, this.ballSize);
+			DrawRect(this.enemyColor, this.enemyX, this.enemyY, this.enemyWidth, this.enemyHeight);
+		}			
 	}
 
 	class Cam {
@@ -525,14 +975,17 @@ $(document).ready(function() {
 	}
 
 	let img = new LoadImages();
+	let cam = new Cam();
 	let player = new Player();
 	Player.prototype.profile = new Profile();
 	let npc = new NPC();
 	NPC.prototype.dialogue = new Dialogue();
-	NPC.prototype.questionMark = new QuestionMark();
+	NPC.prototype.infoNPC = new InfoNPC();
 	let scenario = new Scenario();
-	let cam = new Cam();
-
+	let puzzle = new Puzzle();
+	Puzzle.prototype.puzzleFishing = new PuzzleFishing();
+	Puzzle.prototype.puzzlePong = new PuzzlePong();
+	
 	npc.add();
 	Init();
 })
