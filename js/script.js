@@ -120,14 +120,20 @@ $(document).ready(function() {
 		this.fence_solo.src = "./imgs/fence_solo.png";
 		this.bowie = new Image();
 		this.bowie.src = "./imgs/bowie.png";
-		this.sarah = new Image();
+		this.marioBody = new Image();
+		this.marioBody.src = "./imgs/MarioBody.png";
+		this.sarah = new Image();		
 		this.sarah.src = "./imgs/sarah.png";
+		this.sofiaBody = new Image();		
+		this.sofiaBody.src = "./imgs/sofiaBody.png";		
 		this.jaha = new Image();
 		this.jaha.src = "./imgs/jaha.png";
 		this.taya = new Image();
 		this.taya.src = "./imgs/taya.png";
 		this.chaz = new Image();
 		this.chaz.src = "./imgs/chaz.png";
+		this.jorgeBody = new Image();
+		this.jorgeBody.src = "./imgs/jorgeBody.png";		
 		this.house_solo = new Image();
 		this.house_solo.src = "./imgs/house_solo.png";
 		this.window = new Image();
@@ -440,17 +446,18 @@ $(document).ready(function() {
 			//Desenhando a div da lista de conhecimentos
 			ctx.strokeRect(this.x + 5, this.y + 110, 170, 385);
 			ctx.font = "17px Cursive";
-			ctx.fillText("Habilidades", this.x + 105, this.y + 130);
-			ctx.textAlign = "right";
-			ctx.fillText("Matemática: " + player.levelMath, this.x + 125, this.y + 160);
-			ctx.fillText("Inglês: " + player.levelEnglish, this.x + 80, this.y + 180);
-			ctx.fillText("Educação Física: " + player.levelPhysicalEducation, this.x + 155, this.y + 200);
+			ctx.fillText("Maiores pontuações", this.x + 10, this.y + 130);
+			ctx.fillText("Pong: " + puzzle.highestScorePong, this.x + 10, this.y + 160);
+			ctx.fillText("Pescaria: " + puzzle.highestScoreFishing, this.x + 10, this.y + 180);
+			ctx.fillText("Flappy Bird: " + puzzle.highestScoreFlappyBird, this.x + 10, this.y + 200);
+			ctx.fillText("Breakout: " + puzzle.highestScoreBreakout, this.x + 10, this.y + 220);
+			ctx.fillText("Guitar Hero: " + puzzle.highestScoreGuitarHero, this.x + 10, this.y + 240);
 			//Desenhando a div das informações do personagem
 			ctx.strokeRect(this.x + 110, this.y + 5, 485, 100);
 			ctx.font = "30px Cursive";
-			ctx.fillText("Nome", this.x + 200, this.y + 40);
-			ctx.fillText(player.name, this.x + 230, this.y + 80);
-			ctx.fillText("Nível", this.x + 480, this.y + 40);
+			ctx.fillText("Nome", this.x + 120, this.y + 40);
+			ctx.fillText(player.name, this.x + 120, this.y + 80);
+			ctx.fillText("Nível", this.x + 450, this.y + 40);
 			ctx.fillText(player.level, this.x + 530, this.y + 40);
 			ctx.fillText("XP: ", this.x + 480, this.y + 80);
 			ctx.fillText(Math.floor(player.actualXp), this.x + 530, this.y + 80);
@@ -462,10 +469,10 @@ $(document).ready(function() {
 	}
 
 	class NPC {
-		constructor(name ,message, color, x, y, width, height, img, profession, friendlyLevel, hasPuzzle) {
+		constructor(name ,message, body, x, y, width, height, img, profession, friendlyLevel, hasPuzzle) {
 			this.name = name;
 			this.message = message;
-			this.color = color;
+			this.body = body;
 			this.x = x;
 			this.y = y;
 			this.width = width;
@@ -493,7 +500,7 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Heloisa", 
 				"Oi, " + player.name + ", quer brincar comigo?", 
-				"DodgerBlue", 
+				img.sofiaBody, 
 				400, 
 				100, 
 				25, 
@@ -507,7 +514,7 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Mario", 
 				"Olá, " + player.name + ", bom dia!", 
-				"Green", 
+				img.marioBody, 
 				400, 
 				270, 
 				25, 
@@ -521,7 +528,7 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Sofia", 
 				"Oi, " + player.name + ", tudo bem?", 
-				"Red", 
+				img.sofiaBody, 
 				200, 
 				500, 
 				25, 
@@ -535,7 +542,7 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Bruno", 
 				"Bom dia!",
-				"Purple",
+				img.marioBody,
 				240, 
 				200, 
 				25, 
@@ -549,7 +556,7 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Jorge", 
 				"Bom dia, " + player.name + "! Gostaria de me ajudar a pescar?",
-				"Orange", 
+				img.jorgeBody, 
 				300, 
 				300, 
 				25, 
@@ -564,8 +571,8 @@ $(document).ready(function() {
 		draw() {
 			for (var i = 0; i < this.array.length; i++) {
 				var currentNPC = this.array[i];
-				DrawRect(currentNPC.color, currentNPC.x, currentNPC.y, currentNPC.width, currentNPC.height);
-				scenario.blockRectangle(player, currentNPC.x, currentNPC.y, currentNPC.width, currentNPC.height);
+				RenderImage(currentNPC.body, currentNPC.x, currentNPC.y, 30, 30);
+				scenario.blockRectangle(player, currentNPC.x, currentNPC.y, 30, 30);
 			}
 		}
 	}	
@@ -576,27 +583,27 @@ $(document).ready(function() {
 			this.height = 200;
 			this.x = canvas.width() / 2 - this.width / 2;
 			this.y = canvas.height() - this.height - 10;
-			this.bgColor = "#CAE1FF";
-			this.isOn = false;		
+			this.img = img.dialogue_background;
+			this.isOn = false;	
 		}
 
 		answer() {
 			ctx.font = "30px Cursive";
 			ctx.fillStyle = "Green";
-			ctx.fillText("Sim (Pressione S)", 110, 510);
+			ctx.fillText("Sim (Pressione S)", 115, 510);
 			ctx.fillStyle = "Red";
-			ctx.fillText("Não (Pressione N)", 110, 550);
+			ctx.fillText("Não (Pressione N)", 115, 550);
 		}				
 
 		draw() {
 			if(player.searchNPC() != null) {
-				DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+				RenderImage(this.img, this.x, this.y, this.width, this.height);
 				ctx.fillStyle = "Black";			
-				ctx.font = "30px Cursive";
+				ctx.font = "28px Arial";
 				ctx.textAlign = "left";
-				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 15, this.y + 30);
+				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 20, this.y + 30);
 				ctx.font = "25px Cursive";
-				ctx.fillText(npc.array[player.searchNPC()].message, this.x + 10, this.y + 65);
+				ctx.fillText(npc.array[player.searchNPC()].message, this.x + 15, this.y + 70);
 				if(npc.array[player.searchNPC()].hasPuzzle) {
 					this.answer();					
 				}				
@@ -610,28 +617,26 @@ $(document).ready(function() {
 			this.height = 150;
 			this.x = canvas.width() / 2 - this.width / 2;
 			this.y = 440;
-			this.bgColor = "White";			
+			this.img = img.dialogue_background;	
 		}
 
 		draw() {
 			if(player.searchNPC() != null) {				
-				DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+				RenderImage(this.img, this.x, this.y, this.width, this.height);
 				ctx.fillStyle = "Black";			
-				ctx.font = "25px Cursive";
+				ctx.font = "20px Arial";
 				ctx.textAlign = "left";
-				ctx.strokeRect(this.x + 5, this.y + 5, this.width - 10, 30);
-				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 15, this.y + 29);
-				ctx.strokeRect(this.x + 5, this.y + 40, this.width / 5, this.height - 45);
-				RenderImage(npc.array[player.searchNPC()].img, this.x + 5, this.y + 40, this.width / 5, this.height - 45);
+				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 10, this.y + 25);
+				RenderImage(npc.array[player.searchNPC()].img, this.x + 10, this.y + 35, this.width / 5, this.height - 45);
 				ctx.font = "18px Cursive";
 				if(npc.array[player.searchNPC()].profession != "") {
-					ctx.fillText("Profissão: " + npc.array[player.searchNPC()].profession, 390, 495);
-					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 390, 517);
+					ctx.fillText("Profissão: " + npc.array[player.searchNPC()].profession, 395, 495);
+					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 395, 517);
 				} else {
-					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 390, 495);
+					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 395, 495);
 				}
 				ctx.fillStyle = "Red";
-				ctx.fillText("Pressione Q para conversar", 460, 585);
+				ctx.fillText("Pressione Q para conversar", 460, 580);
 			}		
 		}
 	}
@@ -884,7 +889,8 @@ $(document).ready(function() {
 			this.isOn = false;
 			this.playerMoveLeft = this.playerMoveUp = this.playerMoveDown = this.playerMoveRight = this.upIsDown = false;
 			this.controlRed = this.controlBlue = this.controlGreen = this.controlPurple = false;
-			this.zIsDown = this.xIsDown = this.cIsDown = this.vIsDown = false;			
+			this.zIsDown = this.xIsDown = this.cIsDown = this.vIsDown = false;
+			this.highestScorePong = this.highestScoreFishing = this.highestScoreFlappyBird = this.highestScoreBreakout = this.highestScoreGuitarHero = 0;			
 		}
 	}
 
@@ -897,6 +903,7 @@ $(document).ready(function() {
 			this.bgColor = "White";
 			this.timer = 30;
 			this.intro = false;
+			this.highestScore = 0;
 
 			this.playerWidth = 80;
 			this.playerHeight = 30;
@@ -987,6 +994,9 @@ $(document).ready(function() {
 
 		gameOver() {
 			if(this.timer <= 0) {
+				if(this.playerScore > puzzle.highestScoreGuitarHero) {
+					puzzle.highestScoreGuitarHero = this.playerScore;
+				}				
 				puzzle.isOn = false;
 				npc.array[4].hasPuzzle = false;
 				npc.array[4].message = "Obrigado, " + player.name + "! Pegamos muitos peixes hoje.";
@@ -1124,6 +1134,9 @@ $(document).ready(function() {
 
 		gameOver() {
 			if(this.ballX <= 210) {
+				if(this.playerScore > puzzle.highestScoreGuitarHero) {
+					puzzle.highestScoreGuitarHero = this.playerScore;
+				}				
 				puzzle.isOn = false;
 				npc.array[0].hasPuzzle = false;
 				npc.array[0].message = "Valeu, " + player.name + "! Foi muito divertido.";
@@ -1296,6 +1309,9 @@ $(document).ready(function() {
 		}
 
 		gameOver() {
+			if(this.playerScore > puzzle.highestScoreGuitarHero) {
+				puzzle.highestScoreGuitarHero = this.playerScore;
+			}			
 			puzzle.isOn = false;
 			npc.array[1].hasPuzzle = false;
 			npc.array[1].message = "Valeu, " + player.name + "! Foi muito divertido.";
@@ -1468,6 +1484,9 @@ $(document).ready(function() {
 		}
 
 		gameOver() {
+			if(this.playerScore > puzzle.highestScoreGuitarHero) {
+				puzzle.highestScoreGuitarHero = this.playerScore;
+			}			
 			puzzle.isOn = false;
 			npc.array[2].hasPuzzle = false;
 			npc.array[2].message = "Valeu, " + player.name + "! Foi muito divertido.";
@@ -1571,8 +1590,11 @@ $(document).ready(function() {
 						break;
 				}
 				puzzle.puzzleGuitarHero.tilesQuantity--;
-				setTimeout(interval, 300);
-			}, 300)
+				if(puzzle.puzzleGuitarHero.tilesQuantity <= 0) {
+					puzzle.puzzleGuitarHero.gameOver();
+				}
+				setTimeout(interval, 400);
+			}, 400)
 		}
 
 		moveTiles() {
@@ -1584,6 +1606,17 @@ $(document).ready(function() {
 				}
 			}
 		}		
+
+		gameOver() {
+			if(this.playerScore > puzzle.highestScoreGuitarHero) {
+				puzzle.highestScoreGuitarHero = this.playerScore;
+			}
+			puzzle.isOn = false;
+			npc.array[4].hasPuzzle = false;
+			npc.array[4].message = "Valeu, " + player.name + "! Foi muito divertido.";
+			player.levelUp(Math.floor(this.playerScore / 3));
+			puzzle.puzzleGuitarHero = new PuzzleGuitarHero();			
+		}
 
 		draw() {
 			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
