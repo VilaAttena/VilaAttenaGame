@@ -38,6 +38,8 @@ $(document).ready(function() {
  			} else if(npc.array[player.searchNPC()].name == "Bruno" && !puzzle.puzzleGuitarHero.intro) {
  				puzzle.puzzleGuitarHero.moveTiles();
 				puzzle.puzzleGuitarHero.pressKey(); 				
+ 			} else if(npc.array[player.searchNPC()].name == "Ronaldo" && !puzzle.puzzleMaze.intro) {
+ 				puzzle.puzzleMaze.movePlayer();				
  			}
 		}		
 	}
@@ -68,6 +70,8 @@ $(document).ready(function() {
 				puzzle.puzzleBreakout.draw();				
 			} else if(npc.array[player.searchNPC()].name == "Bruno") {
 				puzzle.puzzleGuitarHero.draw();				
+			} else if(npc.array[player.searchNPC()].name == "Ronaldo") {
+				puzzle.puzzleMaze.draw();
 			}
 		}		
 		if(player.profile.isOn) {
@@ -118,22 +122,26 @@ $(document).ready(function() {
 		this.fence_left.src = "./imgs/fence_left.png";
 		this.fence_solo = new Image();
 		this.fence_solo.src = "./imgs/fence_solo.png";
-		this.bowie = new Image();
-		this.bowie.src = "./imgs/bowie.png";
+		this.mario = new Image();
+		this.mario.src = "./imgs/Mario.png";
 		this.marioBody = new Image();
 		this.marioBody.src = "./imgs/MarioBody.png";
-		this.sarah = new Image();		
-		this.sarah.src = "./imgs/sarah.png";
+		this.sofia = new Image();		
+		this.sofia.src = "./imgs/Sofia.png";
 		this.sofiaBody = new Image();		
 		this.sofiaBody.src = "./imgs/sofiaBody.png";		
-		this.jaha = new Image();
-		this.jaha.src = "./imgs/jaha.png";
+		this.bruno = new Image();
+		this.bruno.src = "./imgs/Bruno.png";
 		this.taya = new Image();
 		this.taya.src = "./imgs/taya.png";
-		this.chaz = new Image();
-		this.chaz.src = "./imgs/chaz.png";
+		this.jorge = new Image();
+		this.jorge.src = "./imgs/Jorge.png";
 		this.jorgeBody = new Image();
-		this.jorgeBody.src = "./imgs/jorgeBody.png";		
+		this.jorgeBody.src = "./imgs/jorgeBody.png";
+		this.ronaldo = new Image();
+		this.ronaldo.src = "./imgs/Ronaldo.png";
+		this.ronaldoBody = new Image();
+		this.ronaldoBody.src = "./imgs/ronaldoBody.png";				
 		this.house_solo = new Image();
 		this.house_solo.src = "./imgs/house_solo.png";
 		this.window = new Image();
@@ -177,7 +185,7 @@ $(document).ready(function() {
 					if(!puzzle.upIsDown) {
 						puzzle.puzzleFlappyBird.playerJumping = true;
 					}
-					puzzle.playerMoveUp = true;					
+					puzzle.playerMoveUp = true;				
 					break;
 				}	
 
@@ -214,7 +222,9 @@ $(document).ready(function() {
 					puzzle.puzzleGuitarHero.intro = false;
 					puzzle.puzzleGuitarHero.addControllers();
 					puzzle.puzzleGuitarHero.addTiles();
-				}		
+				}	else if(puzzle.puzzleMaze.intro) {
+					puzzle.puzzleMaze.intro = false;
+					puzzle.puzzleMaze.time();				}
 				if(!player.profile.isOn && !npc.dialogue.isOn && !puzzle.isOn) {
 					player.profile.isOn = true;
 					break;
@@ -237,25 +247,26 @@ $(document).ready(function() {
 					}	
 				break;			
 
-			case (!puzzle.isOn):
-				case 83:
-					if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Heloisa") {
-						puzzle.puzzlePong.intro = true;
-					} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Jorge") {
-						puzzle.puzzleFishing.intro = true;
-					} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Sofia") {
-						puzzle.puzzleBreakout.intro = true;
-					} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Mario") {
-						puzzle.puzzleFlappyBird.intro = true;
-					} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Bruno") {
-						puzzle.puzzleGuitarHero.intro = true;
-					}
-					if(npc.dialogue.isOn && npc.array[player.searchNPC()].hasPuzzle) {
-						puzzle.isOn = true;
-						npc.dialogue.isOn = false;
-						break;
-					}
-				break;
+			case 83:
+				if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Heloisa" && !puzzle.isOn) {
+					puzzle.puzzlePong.intro = true;
+				} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Jorge" && !puzzle.isOn) {
+					puzzle.puzzleFishing.intro = true;
+				} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Sofia" && !puzzle.isOn) {
+					puzzle.puzzleBreakout.intro = true;
+				} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Mario" && !puzzle.isOn) {
+					puzzle.puzzleFlappyBird.intro = true;
+				} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Bruno" && !puzzle.isOn) {
+					puzzle.puzzleGuitarHero.intro = true;
+				} else if(npc.array[player.searchNPC()] != null && npc.array[player.searchNPC()].name == "Ronaldo" && !puzzle.isOn) {
+					puzzle.puzzleMaze.intro = true;
+				}
+				if(npc.dialogue.isOn && npc.array[player.searchNPC()].hasPuzzle) {
+					puzzle.isOn = true;
+					npc.dialogue.isOn = false;
+					break;
+				}
+			break;
 
 			case (!puzzle.isOn):
 				case 78:
@@ -301,7 +312,28 @@ $(document).ready(function() {
 					puzzle.isOn = false;
 				} else if(puzzle.puzzleGuitarHero.intro) {
 					puzzle.isOn = false;
+				} else if(puzzle.puzzleMaze.intro) {
+					puzzle.isOn = false;
 				}
+				if(puzzle.puzzlePong.outro) {
+					puzzle.puzzlePong.outro = false;
+					puzzle.puzzlePong.exit();
+				} else if(puzzle.puzzleFishing.outro) {
+					puzzle.puzzleFishing.outro = false;
+					puzzle.puzzleFishing.exit();					
+				} else if(puzzle.puzzleFlappyBird.outro) {
+					puzzle.puzzleFlappyBird.outro = false;
+					puzzle.puzzleFlappyBird.exit();					
+				} else if(puzzle.puzzleBreakout.outro) {
+					puzzle.puzzleBreakout.outro = false;
+					puzzle.puzzleBreakout.exit();					
+				} else if(puzzle.puzzleGuitarHero.outro) {
+					puzzle.puzzleGuitarHero.outro = false;
+					puzzle.puzzleGuitarHero.exit();					
+				} else if(puzzle.puzzleMaze.outro) {
+					puzzle.puzzleMaze.outro = false;
+					puzzle.puzzleMaze.exit();					
+				}							
 		}
 	})
 
@@ -452,6 +484,7 @@ $(document).ready(function() {
 			ctx.fillText("Flappy Bird: " + puzzle.highestScoreFlappyBird, this.x + 10, this.y + 200);
 			ctx.fillText("Breakout: " + puzzle.highestScoreBreakout, this.x + 10, this.y + 220);
 			ctx.fillText("Guitar Hero: " + puzzle.highestScoreGuitarHero, this.x + 10, this.y + 240);
+			ctx.fillText("Labirinto: " + puzzle.highestScoreMaze, this.x + 10, this.y + 260);
 			//Desenhando a div das informações do personagem
 			ctx.strokeRect(this.x + 110, this.y + 5, 485, 100);
 			ctx.font = "30px Cursive";
@@ -519,7 +552,7 @@ $(document).ready(function() {
 				270, 
 				25, 
 				25, 
-				img.bowie,
+				img.mario,
 				"Agricultor",
 				"1",
 				true
@@ -533,7 +566,7 @@ $(document).ready(function() {
 				500, 
 				25, 
 				25, 
-				img.sarah,
+				img.sofia,
 				"Comerciante",
 				"1",
 				true
@@ -547,8 +580,8 @@ $(document).ready(function() {
 				200, 
 				25, 
 				25, 
-				img.jaha,
-				"Caçador",
+				img.bruno,
+				"Músico",
 				"1",
 				true
 			));
@@ -561,11 +594,25 @@ $(document).ready(function() {
 				300, 
 				25, 
 				25, 
-				img.chaz,
+				img.jorge,
 				"Pescador",
 				"1",
 				true
 			));
+
+			this.array.push(new NPC(
+				"Ronaldo", 
+				"Eae, " + player.name + "! Tenho um desafio para você, quer jogar?",
+				img.ronaldoBody, 
+				500, 
+				300, 
+				25, 
+				25, 
+				img.ronaldo,
+				"Explorador",
+				"1",
+				true
+			));			
 		}
 
 		draw() {
@@ -890,7 +937,7 @@ $(document).ready(function() {
 			this.playerMoveLeft = this.playerMoveUp = this.playerMoveDown = this.playerMoveRight = this.upIsDown = false;
 			this.controlRed = this.controlBlue = this.controlGreen = this.controlPurple = false;
 			this.zIsDown = this.xIsDown = this.cIsDown = this.vIsDown = false;
-			this.highestScorePong = this.highestScoreFishing = this.highestScoreFlappyBird = this.highestScoreBreakout = this.highestScoreGuitarHero = 0;			
+			this.highestScorePong = this.highestScoreFishing = this.highestScoreFlappyBird = this.highestScoreBreakout = this.highestScoreGuitarHero = this.highestScoreMaze = 0;			
 		}
 	}
 
@@ -903,7 +950,10 @@ $(document).ready(function() {
 			this.bgColor = "White";
 			this.timer = 30;
 			this.intro = false;
+			this.outro = false;
 			this.highestScore = 0;
+			this.loopSpeed = 200;
+			this.timerSpeed = 1000;
 
 			this.playerWidth = 80;
 			this.playerHeight = 30;
@@ -951,8 +1001,8 @@ $(document).ready(function() {
 						puzzle.puzzleFishing.fishs.push(new PuzzleFishing(Math.floor((Math.random() * 500) + 200), 50, 25, 25, 5, "Gray"));
 						break;						
 				}
-				setTimeout(loop, 200);
-			}, 200)
+				setTimeout(loop, puzzle.puzzleFishing.loopSpeed);
+			}, puzzle.puzzleFishing.loopSpeed)
 		}
 
 		movePlayer() {
@@ -988,22 +1038,26 @@ $(document).ready(function() {
 				if(puzzle.puzzleFishing.timer <= 0) {
 					puzzle.puzzleFishing.gameOver();
 				}
-				setTimeout(interval, 1000);
-			}, 1000)
+				setTimeout(interval, puzzle.puzzleFishing.timerSpeed);
+			}, puzzle.puzzleFishing.timerSpeed)
 		}
 
 		gameOver() {
-			if(this.timer <= 0) {
-				if(this.playerScore > puzzle.highestScoreGuitarHero) {
-					puzzle.highestScoreGuitarHero = this.playerScore;
-				}				
-				puzzle.isOn = false;
-				npc.array[4].hasPuzzle = false;
-				npc.array[4].message = "Obrigado, " + player.name + "! Pegamos muitos peixes hoje.";
-				player.levelUp(Math.floor(this.playerScore / 10));
-				puzzle.puzzleFishing = new PuzzleFishing;
-			}	
-		}		
+			if(this.playerScore > puzzle.highestScoreFishing) {
+				puzzle.highestScoreFishing = this.playerScore;
+			}
+			this.fishs = [];
+			this.outro = true;
+			this.loopSpeed = 6000000;
+			this.timerSpeed = 6000000;
+		}
+
+		exit() {
+			puzzle.puzzleFishing = new PuzzleFishing;
+			npc.array[4].message = "Obrigado, " + player.name + "! Pegamos muitos peixes hoje. Vamos continuar?";
+			player.levelUp(Math.floor(this.playerScore / 10));
+			puzzle.isOn = false;
+		}  				
 
 		draw() {
 			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
@@ -1033,7 +1087,32 @@ $(document).ready(function() {
 				ctx.font = "30px Cursive";				
 				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
 				ctx.textAlign = "start";				
-			} else { 
+			} else if(this.outro) { 
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScoreFishing) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + this.playerScore, 360, 300);
+					ctx.fillText("Você recebeu " + this.playerScore / 10 + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + puzzle.highestScoreFishing, 390, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + this.playerScore / 10 + " pontos de experiência", 490, 240);					
+				}				
+			} else {
 				ctx.fillStyle = "Black";
 				ctx.font = "30px Cursive";
 				ctx.fillStyle = "Red";
@@ -1047,7 +1126,9 @@ $(document).ready(function() {
 		drawFish() {
 			for(var i = 0; i < this.fishs.length; i++) {
 				this.currentFish = this.fishs[i];
-				DrawRect(this.currentFish.fishColor, this.currentFish.fishX, this.currentFish.fishY, this.currentFish.fishWidth, this.currentFish.fishHeight);
+				if(!this.outro) {
+					DrawRect(this.currentFish.fishColor, this.currentFish.fishX, this.currentFish.fishY, this.currentFish.fishWidth, this.currentFish.fishHeight);
+				}
 			}			
 		}
 	}
@@ -1060,6 +1141,7 @@ $(document).ready(function() {
 			this.y = canvas.height() / 2 - this.height / 2;
 			this.bgColor = "White";
 			this.intro = false;
+			this.outro = false;
 
 			this.playerWidth = 30;
 			this.playerHeight = 80;
@@ -1133,16 +1215,19 @@ $(document).ready(function() {
 		}
 
 		gameOver() {
-			if(this.ballX <= 210) {
-				if(this.playerScore > puzzle.highestScoreGuitarHero) {
-					puzzle.highestScoreGuitarHero = this.playerScore;
-				}				
-				puzzle.isOn = false;
-				npc.array[0].hasPuzzle = false;
-				npc.array[0].message = "Valeu, " + player.name + "! Foi muito divertido.";
-				player.levelUp(Math.floor(this.playerScore));
-				puzzle.puzzlePong = new PuzzlePong();
+			if(this.ballX <= 210) {			
+				this.outro = true;
 			}
+		}
+
+		exit() {
+			if(this.playerScore > puzzle.highestScorePong) {
+				puzzle.highestScorePong = this.playerScore;
+			}				
+			puzzle.isOn = false;			
+			npc.array[0].message = "Valeu, " + player.name + "! Foi muito divertido. Quer jogar de novo?";
+			player.levelUp(Math.floor(this.playerScore / 2));
+			puzzle.puzzlePong = new PuzzlePong();
 		}
 
 		draw() {
@@ -1173,6 +1258,31 @@ $(document).ready(function() {
 				ctx.font = "30px Cursive";				
 				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
 				ctx.textAlign = "start";
+			} else if(this.outro) {
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScorePong) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + this.playerScore, 360, 300);
+					ctx.fillText("Você recebeu " + this.playerScore / 2 + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + puzzle.highestScorePong, 370, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + this.playerScore / 2 + " pontos de experiência", 470, 240);					
+				}
 			} else {
 				ctx.fillStyle = "Black";
 				ctx.font = "30px Cursive";
@@ -1192,13 +1302,15 @@ $(document).ready(function() {
 			this.y = canvas.height() / 2 - this.height / 2;
 			this.bgColor = "White";
 			this.intro = false;
-			
+			this.outro = false;
+			this.spawnSpeed = 300;
+
 			this.playerColor = "Black";
 			this.playerSize = 15;
 			this.playerX = 150;
 			this.playerY = canvas.height() / 2 - this.playerSize / 2;
-			this.playerGravityForce = 0.5;
-			this.playerLift = -20;
+			this.playerGravityForce = 0.4;
+			this.playerLift = -17;
 			this.playerSpeed = 0;
 			this.playerJumping = false;
 			this.playerScore = 0;
@@ -1240,6 +1352,31 @@ $(document).ready(function() {
 				ctx.font = "30px Cursive";				
 				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
 				ctx.textAlign = "start";
+			} else if(this.outro) {
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScoreFlappyBird) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + Math.floor(this.playerScore), 360, 300);
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 2) + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + Math.floor(puzzle.highestScoreFlappyBird), 370, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 3) + " pontos de experiência", 470, 240);					
+				}
 			} else {
 				if(this.playerY >= 48) {
 					DrawRect(this.playerColor, this.playerX, this.playerY, this.playerSize, this.playerSize);
@@ -1255,7 +1392,9 @@ $(document).ready(function() {
 		}
 
 		scoring() {
-			this.playerScore += 0.1;
+			if(!this.outro) {
+				this.playerScore += 0.1;
+			}
 		}
 
 		jump() {
@@ -1293,8 +1432,8 @@ $(document).ready(function() {
 			setTimeout(function interval(){
 				puzzle.puzzleFlappyBird.pillars.push(new PuzzleFlappyBird("Black", canvas.width(), 0, 50, puzzle.puzzleFlappyBird.randomNumber(260, 220)));
 				puzzle.puzzleFlappyBird.pillars.push(new PuzzleFlappyBird("Black", canvas.width(), puzzle.puzzleFlappyBird.randomNumber(320, 360), 50, 600));
-				setTimeout(interval, 300);			
-			}, 300)
+				setTimeout(interval, puzzle.puzzleFlappyBird.spawnSpeed);			
+			}, puzzle.puzzleFlappyBird.spawnSpeed)
 		}
 
 		movePillar() {
@@ -1309,16 +1448,20 @@ $(document).ready(function() {
 		}
 
 		gameOver() {
-			if(this.playerScore > puzzle.highestScoreGuitarHero) {
-				puzzle.highestScoreGuitarHero = this.playerScore;
-			}			
-			puzzle.isOn = false;
-			npc.array[1].hasPuzzle = false;
-			npc.array[1].message = "Valeu, " + player.name + "! Foi muito divertido.";
-			player.levelUp(Math.floor(this.playerScore));
-			puzzle.puzzleFlappyBird = new PuzzleFlappyBird();				
+			this.pillars = [];
+			this.outro = true;
+			this.spawnSpeed = 6000000;	
 		}	
 
+		exit() {
+			if(this.playerScore > puzzle.highestScoreFlappyBird) {
+				puzzle.highestScoreFlappyBird = Math.floor(this.playerScore);
+			}
+			puzzle.puzzleFlappyBird = new PuzzleFlappyBird();
+			puzzle.isOn = false;
+			npc.array[1].message = "Valeu, " + player.name + "! Foi muito divertido.";
+			player.levelUp(Math.floor(this.playerScore / 3));
+		}
 	}
 
 	class PuzzleBreakout {
@@ -1329,6 +1472,7 @@ $(document).ready(function() {
 			this.y = canvas.height() / 2 - this.height / 2;
 			this.bgColor = "White";
 			this.intro = false;
+			this.outro = false;
 
 			this.playerWidth = 80;
 			this.playerHeight = 30;
@@ -1384,6 +1528,31 @@ $(document).ready(function() {
 				ctx.font = "30px Cursive";				
 				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
 				ctx.textAlign = "start";
+			} else if(this.outro) { 
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScoreBreakout) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + this.playerScore, 360, 300);
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 3) + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + this.playerScore, canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + puzzle.highestScoreBreakout, 390, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + this.playerScore / 10 + " pontos de experiência", 490, 240);					
+				}				
 			} else {
 				ctx.font = "25px Cursive";
 				ctx.fillStyle = "Red";
@@ -1484,15 +1653,18 @@ $(document).ready(function() {
 		}
 
 		gameOver() {
-			if(this.playerScore > puzzle.highestScoreGuitarHero) {
-				puzzle.highestScoreGuitarHero = this.playerScore;
+			this.outro = true;			
+		}
+
+		exit() {
+			if(this.playerScore > puzzle.highestScoreBreakout) {
+				puzzle.highestScoreBreakout = this.playerScore;
 			}			
 			puzzle.isOn = false;
-			npc.array[2].hasPuzzle = false;
-			npc.array[2].message = "Valeu, " + player.name + "! Foi muito divertido.";
+			npc.array[1].message = "Valeu, " + player.name + "! Foi muito divertido.";
 			player.levelUp(Math.floor(this.playerScore / 3));
-			puzzle.puzzleBreakout = new PuzzleBreakout();			
-		}
+			puzzle.puzzleBreakout = new PuzzleBreakout();
+		}		
 	}
 
 	class PuzzleGuitarHero {
@@ -1503,6 +1675,7 @@ $(document).ready(function() {
 			this.y = canvas.height() / 2 - this.height / 2;
 			this.bgColor = "White";
 			this.intro = false;
+			this.outro = false;
 
 			this.playerX = playerX;
 			this.playerY = 500;
@@ -1518,7 +1691,8 @@ $(document).ready(function() {
 			this.tileColor = tileColor;
 			this.tilesArray = [];
 			this.tileSpeed = 5;
-			this.tilesQuantity = 50;		
+			this.tilesQuantity = 50;
+			this.spawnSpeed = 400;		
 
 			this.controllers = [];
 			this.controlRed = this.controlBlue = this.controlGreen = this.controlPurple = false;
@@ -1545,22 +1719,22 @@ $(document).ready(function() {
 						 if(this.currentController.playerColor == "Red" && 
 						 puzzle.controlRed &&
 						 this.currentTile.tileColor == "Red") {
-							this.playerScore += 10;
+							this.playerScore += 5;
 							this.tilesArray.splice(this.tilesArray.indexOf(this.currentTile), 1);						
 						 } else if(this.currentController.playerColor == "Blue" && 
 						 puzzle.controlBlue &&
 						 this.currentTile.tileColor == "Blue") {
-						 	this.playerScore += 10;
+						 	this.playerScore += 5;
 							this.tilesArray.splice(this.tilesArray.indexOf(this.currentTile), 1);
 						 } else if(this.currentController.playerColor == "Green" && 
 						 puzzle.controlGreen &&
 						 this.currentTile.tileColor == "Green") {
-						 	this.playerScore += 10;
+						 	this.playerScore += 5;
 							this.tilesArray.splice(this.tilesArray.indexOf(this.currentTile), 1);
 						 } else if(this.currentController.playerColor == "Purple" && 
 						 puzzle.controlPurple &&
 						 this.currentTile.tileColor == "Purple") {
-						 	this.playerScore += 10;
+						 	this.playerScore += 5;
 							this.tilesArray.splice(this.tilesArray.indexOf(this.currentTile), 1);
 						 }
 					}
@@ -1593,8 +1767,8 @@ $(document).ready(function() {
 				if(puzzle.puzzleGuitarHero.tilesQuantity <= 0) {
 					puzzle.puzzleGuitarHero.gameOver();
 				}
-				setTimeout(interval, 400);
-			}, 400)
+				setTimeout(interval, puzzle.puzzleGuitarHero.spawnSpeed);
+			}, puzzle.puzzleGuitarHero.spawnSpeed)
 		}
 
 		moveTiles() {
@@ -1608,15 +1782,20 @@ $(document).ready(function() {
 		}		
 
 		gameOver() {
+			this.tilesArray = [];
+			this.outro = true;
+			this.spawnSpeed = 6000000;
+		}
+
+		exit() {
 			if(this.playerScore > puzzle.highestScoreGuitarHero) {
 				puzzle.highestScoreGuitarHero = this.playerScore;
 			}
 			puzzle.isOn = false;
-			npc.array[4].hasPuzzle = false;
-			npc.array[4].message = "Valeu, " + player.name + "! Foi muito divertido.";
-			player.levelUp(Math.floor(this.playerScore / 3));
-			puzzle.puzzleGuitarHero = new PuzzleGuitarHero();			
-		}
+			npc.array[4].message = "Valeu, " + player.name + "! Quer praticar mais um pouco?";
+			player.levelUp(Math.floor(this.playerScore / 2));
+			puzzle.puzzleGuitarHero = new PuzzleGuitarHero();				
+		}		
 
 		draw() {
 			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
@@ -1624,28 +1803,54 @@ $(document).ready(function() {
 				ctx.fillStyle = "Red";
 				ctx.font = "50px Cursive";
 				ctx.textAlign = "center";
-				ctx.fillText("Jogar Breakout", canvas.width() / 2, 100);
+				ctx.fillText("Praticando guitarra!", canvas.width() / 2, 100);
 				ctx.fillStyle = "Black";
 				ctx.font = "30px Cursive";
-				ctx.fillText("Evite com que a bola colida com a margem inferior", canvas.width() / 2, 170);
-				ctx.fillText("bloqueando-a com seu bloco e ao mesmo tempo", canvas.width() / 2, 210);
-				ctx.fillText("quebre todos os blocos", canvas.width() / 2, 250);
+				ctx.fillText("Evite com que os blocos alcancem a margem inferior,", canvas.width() / 2, 170);
+				ctx.fillText("pressionando a tecla correspondente quando os blocos", canvas.width() / 2, 210);
+				ctx.fillText("em movimento estiverem acima dos blocos inferiores", canvas.width() / 2, 250);
 				ctx.fillStyle = "Red";
 				ctx.font = "40px Cursive";
 				ctx.fillText("Comandos", canvas.width() / 2, 340);
 				ctx.font = "28px Cursive";
 				ctx.fillStyle = "Black";
-				ctx.fillText("Movimentação: seta esquerda e seta direita", canvas.width() / 2, 390);
+				ctx.fillText("Ações: Z para o bloco Vermelho, X para o bloco Azul,", canvas.width() / 2, 390);
+				ctx.fillText("C para o bloco Verde e V para o bloco Roxo", canvas.width() / 2, 430);
 				ctx.fillStyle = "Red";
 				ctx.font = "40px Cursive";
-				ctx.fillText("Deseja jogar?", canvas.width() / 2, 450);
+				ctx.fillText("Deseja jogar?", canvas.width() / 2, 490);
 				ctx.fillStyle = "Green";
 				ctx.font = "30px Cursive";
-				ctx.fillText("Sim (ENTER)", canvas.width() / 2, 500);
+				ctx.fillText("Sim (ENTER)", canvas.width() / 2, 540);
 				ctx.fillStyle = "Red";
 				ctx.font = "30px Cursive";				
-				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
+				ctx.fillText("Não (ESC)", canvas.width() / 2, 580);
 				ctx.textAlign = "start";
+			} else if(this.outro) {
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScoreGuitarHero) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + Math.floor(this.playerScore), 360, 300);
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 2) + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + Math.floor(puzzle.highestScoreGuitarHero), 370, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 2) + " pontos de experiência", 470, 240);					
+				}
 			} else {
 				ctx.font = "30px Cursive";
 				ctx.fillStyle = "Red";
@@ -1673,6 +1878,197 @@ $(document).ready(function() {
 				}				
 			}
 		}
+	}
+
+	class PuzzleMaze {
+		constructor() {
+			this.width = canvas.width();
+			this.height = canvas.height();
+			this.x = canvas.width() / 2 - this.width / 2;
+			this.y = canvas.height() / 2 - this.height / 2;
+			this.bgColor = "White";
+			this.intro = false;
+			this.timerSpeed = 1000;
+			this.timer = 50;
+
+			this.playerSize = 10;
+			this.playerX = 10;
+			this.playerY = 130;
+			this.playerColor = "Red";
+			this.playerScore = 1000;
+			this.playerSpeed = 2;
+
+			this.tileSize = 24;
+			this.map = [
+							 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+							 [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+							 [1,1,1,0,1,1,1,1,0,1,1,1,0,1,0,1,0,1,1,1,1,1,0,1,1,1],
+							 [1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,1],
+							 [0,0,1,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,1,1,1,1,1,1],
+							 [0,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,1,0,0,1,0,0,1],
+							 [0,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+							 [1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,1],
+							 [1,0,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1,1,1,1,1],
+							 [1,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,1],
+							 [1,1,1,0,1,1,1,0,0,1,0,1,0,1,0,1,1,1,0,1,1,1,1,1,0,1],
+							 [1,0,1,0,0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+							 [1,0,1,0,1,0,1,0,0,1,1,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],
+							 [1,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0,1],
+							 [1,1,1,1,1,0,1,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1],
+							 [1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1],
+							 [1,1,1,0,1,1,1,0,0,1,0,1,1,0,0,1,1,1,1,1,0,1,1,1,0,1],
+							 [1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,1],
+							 [1,0,1,1,1,0,1,0,0,1,0,0,1,1,1,0,1,1,0,1,0,1,1,1,0,1],
+							 [1,0,1,0,0,0,1,0,0,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1],
+							 [1,0,1,0,1,1,1,1,1,1,0,0,1,0,1,1,1,1,0,1,1,1,0,1,1,1],
+							 [1,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,1,1,0,1,0,1],
+							 [1,0,1,1,1,1,1,1,0,1,0,1,1,0,1,1,1,1,1,0,0,1,0,1,0,0],
+							 [1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+							 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0]];
+
+		this.mapHeight = this.map.length * this.tileSize;
+		this.mapWidth = this.map[0].length * this.tileSize;					 
+		}
+
+		movePlayer() {
+			if(puzzle.playerMoveLeft) {
+				this.playerX -= this.playerSpeed;
+			} else if(puzzle.playerMoveUp) {
+				this.playerY -= this.playerSpeed;
+			} else if(puzzle.playerMoveRight) {
+				this.playerX += this.playerSpeed;
+			} else if(puzzle.playerMoveDown) {
+				this.playerY += this.playerSpeed;
+			}
+			if(this.playerX + this.playerSize >= this.mapWidth || this.playerY + this.playerSize >= this.mapHeight) {
+				this.gameOver();
+			}
+		}
+
+		time() {
+			setTimeout(function interval(){
+				puzzle.puzzleMaze.timer -= 1;
+				if(puzzle.puzzleMaze.playerScore > 0) {
+					puzzle.puzzleMaze.playerScore -= 20;
+				}
+				if(puzzle.puzzleMaze.timer <= 0) {
+					puzzle.puzzleMaze.gameOver();
+				}
+				setTimeout(interval, puzzle.puzzleMaze.timerSpeed);
+			}, puzzle.puzzleMaze.timerSpeed)
+		}				
+
+		blockRectangle(tileX, tileY, tileSize) {
+			this.distX = (this.playerX + this.playerSize/2) - (tileX + tileSize/2);
+			this.distY = (this.playerY + this.playerSize/2) - (tileY + tileSize/2);
+			
+			this.sumWidth = (this.playerSize + tileSize)/2;
+			this.sumHeight = (this.playerSize + tileSize)/2;
+			
+			if(Math.abs(this.distX) < this.sumWidth && Math.abs(this.distY) < this.sumHeight){
+				this.overlapX = this.sumWidth - Math.abs(this.distX);
+				this.overlapY = this.sumHeight - Math.abs(this.distY);
+				
+				if(this.overlapX > this.overlapY){				
+					this.playerY = this.distY > 0 ? this.playerY + this.overlapY : this.playerY - this.overlapY;
+				} else {
+					this.playerX = this.distX > 0 ? this.playerX + this.overlapX : this.playerX - this.overlapX;
+				}
+			}
+		}		
+
+		gameOver() {
+			this.map = [];
+			this.outro = true;
+			this.timerSpeed = 6000000;
+		}
+
+		exit() {
+			if(this.playerScore > puzzle.highestScoreMaze) {
+				puzzle.highestScoreMaze = this.playerScore;
+			}
+			puzzle.isOn = false;
+			npc.array[5].message = "Valeu, " + player.name + "! Vamos jogar de novo?";
+			player.levelUp(Math.floor(this.playerScore / 10));
+			puzzle.puzzleMaze = new PuzzleMaze();				
+		}		
+
+		draw() {			
+			DrawRect(this.bgColor, this.x, this.y, this.width, this.height);
+			if(this.intro) {
+				ctx.fillStyle = "Red";
+				ctx.font = "50px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillText("Fuja do labirinto!", canvas.width() / 2, 100);
+				ctx.fillStyle = "Black";
+				ctx.font = "30px Cursive";
+				ctx.fillText("Mova seu personagem e escape do labirinto", canvas.width() / 2, 170);
+				ctx.fillText("antes que o tempo acabe, quanto mais rápido", canvas.width() / 2, 210);
+				ctx.fillText("você sair, mais pontos receberá", canvas.width() / 2, 250);
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.fillText("Comandos", canvas.width() / 2, 340);
+				ctx.font = "28px Cursive";
+				ctx.fillStyle = "Black";
+				ctx.fillText("Movimentação: seta esquerda, cima, direita e baixo", canvas.width() / 2, 390);
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.fillText("Deseja jogar?", canvas.width() / 2, 450);
+				ctx.fillStyle = "Green";
+				ctx.font = "30px Cursive";
+				ctx.fillText("Sim (ENTER)", canvas.width() / 2, 500);
+				ctx.fillStyle = "Red";
+				ctx.font = "30px Cursive";				
+				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
+				ctx.textAlign = "start";				
+			} else if(this.outro) {
+				ctx.fillStyle = "Red";
+				ctx.font = "40px Cursive";
+				ctx.textAlign = "center";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Pressione ESC para sair", canvas.width() / 2, 500);
+				if(this.playerScore > puzzle.highestScoreMaze) {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Parabéns!!!", canvas.width() / 2, 100);
+					ctx.fillText("Você quebrou seu recorde!", canvas.width() / 2, 150);
+					ctx.fillStyle = "Black"
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 200);
+					ctx.font = "30px Cursive";
+					ctx.fillStyle = "Green";
+					ctx.fillText("Seu novo recorde: " + Math.floor(this.playerScore), 360, 300);
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 10) + " pontos de experiência", 480, 340);
+				} else {
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pontuação final: " + Math.floor(this.playerScore), canvas.width() / 2, 100);
+					ctx.fillStyle = "Black";
+					ctx.font = "30px Cursive";
+					ctx.fillText("Seu recorde atual é: " + Math.floor(puzzle.highestScoreMaze), 370, 200);
+					ctx.fillStyle = "Green";
+					ctx.fillText("Você recebeu " + Math.floor(this.playerScore / 10) + " pontos de experiência", 470, 240);					
+				}
+			} else {
+				for(this.row in this.map) {
+					for(this.col in this.map[this.row]) {
+						this.tileX = this.col * this.tileSize;
+						this.tileY = this.row * this.tileSize;
+						this.tile = this.map[this.row][this.col];
+						if(this.tile == 0) {
+							ctx.fillStyle = "White";
+							ctx.fillRect(this.tileX, this.tileY, this.tileSize, this.tileSize);
+						} else if(this.tile == 1) {
+							ctx.fillStyle = "Black";
+							ctx.fillRect(this.tileX, this.tileY, this.tileSize, this.tileSize);
+							this.blockRectangle(this.tileX, this.tileY, this.tileSize);				
+						}
+					}
+				}
+				DrawRect(this.playerColor, this.playerX, this.playerY, this.playerSize, this.playerSize);
+				ctx.font = "40px Cursive";
+				ctx.fillStyle = "Red";
+				ctx.fillText("Tempo: " + this.timer, 650, 40);
+				ctx.fillText("Pontos: " + this.playerScore, 650, 90);
+			}
+		}	
 	}
 
 	class Cam {
@@ -1741,6 +2137,7 @@ $(document).ready(function() {
 	Puzzle.prototype.puzzleFlappyBird = new PuzzleFlappyBird();
 	Puzzle.prototype.puzzleBreakout = new PuzzleBreakout();
 	Puzzle.prototype.puzzleGuitarHero = new PuzzleGuitarHero();
+	Puzzle.prototype.puzzleMaze = new PuzzleMaze();
 	
 	npc.add();
 	Init();
