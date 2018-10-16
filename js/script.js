@@ -19,7 +19,6 @@ $(document).ready(function() {
  				puzzle.puzzlePong.moveEnemy();
  				puzzle.puzzlePong.moveBall();
  				puzzle.puzzlePong.colide();
- 				puzzle.puzzlePong.gameOver();
  			} else if(npc.array[player.searchNPC()].name == "Jorge" && !puzzle.puzzleFishing.intro && !puzzle.pause) {
  				puzzle.puzzleFishing.movePlayer();
  				puzzle.puzzleFishing.updateFish();
@@ -52,26 +51,69 @@ $(document).ready(function() {
 			cam.y = Math.max(0,Math.min(scenario.height - cam.height,cam.y));					
 			scenario.drawTiles();
 			npc.draw();	
-			player.draw();				
+			player.draw();
+			npc.signalNPC.draw();
 			ctx.restore();
 			if(!puzzle.isOn) {
 				npc.infoNPC.draw();			
 			}	
 		} 
  		if(puzzle.isOn) {
-			if(npc.array[player.searchNPC()].name == "Jorge") {
+			if(npc.array[player.searchNPC()].name == "Jorge") {				
 				puzzle.puzzleFishing.draw();
-				puzzle.puzzleFishing.drawFish();		
+				puzzle.puzzleFishing.drawFish();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 450, 120);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 330, 170);					
+				}					
 			} else if(npc.array[player.searchNPC()].name == "Heloisa") {
 				puzzle.puzzlePong.draw();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 450, 100);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 330, 150);					
+				}					
 			} else if(npc.array[player.searchNPC()].name == "Mario") {
 				puzzle.puzzleFlappyBird.draw();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 450, 60);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 330, 110);					
+				}					
 			} else if(npc.array[player.searchNPC()].name == "Sofia") {
-				puzzle.puzzleBreakout.draw();				
+				puzzle.puzzleBreakout.draw();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 450, 300);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 330, 350);					
+				}									
 			} else if(npc.array[player.searchNPC()].name == "Bruno") {
-				puzzle.puzzleGuitarHero.draw();				
+				puzzle.puzzleGuitarHero.draw();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 450, 100);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 330, 150);					
+				}								
 			} else if(npc.array[player.searchNPC()].name == "Ronaldo") {
 				puzzle.puzzleMaze.draw();
+				if(puzzle.pause) {
+					ctx.font = "40px Cursive";
+					ctx.fillStyle = "Red";
+					ctx.fillText("Pause", 740, 120);
+					ctx.font = "30px Cursive";
+					ctx.fillText("Pressione ESC para sair", 630, 170);					
+				}					
 			}
 		}		
 		if(player.profile.isOn) {
@@ -98,30 +140,93 @@ $(document).ready(function() {
 	}	
 
 	function LoadImages() {
+		//Imagens do personagem principal 
+		this.maleCharacter_front1 = new Image();
+		this.maleCharacter_front1.src = "./imgs/maleCharacter_front1.png";
+		this.maleCharacter_front2 = new Image();
+		this.maleCharacter_front2.src = "./imgs/maleCharacter_front2.png";
+		this.maleCharacter_front3 = new Image();
+		this.maleCharacter_front3.src = "./imgs/maleCharacter_front3.png";
+		this.maleCharacter_back1 = new Image();
+		this.maleCharacter_back1.src = "./imgs/maleCharacter_back1.png";
+		this.maleCharacter_back2 = new Image();
+		this.maleCharacter_back2.src = "./imgs/maleCharacter_back2.png";
+		this.maleCharacter_back3 = new Image();
+		this.maleCharacter_back3.src = "./imgs/maleCharacter_back3.png";
+		this.maleCharacter_left1 = new Image();
+		this.maleCharacter_left1.src = "./imgs/maleCharacter_left1.png";
+		this.maleCharacter_left2 = new Image();
+		this.maleCharacter_left2.src = "./imgs/maleCharacter_left2.png";
+		this.maleCharacter_left3 = new Image();
+		this.maleCharacter_left3.src = "./imgs/maleCharacter_left3.png";
+		this.maleCharacter_right1 = new Image();
+		this.maleCharacter_right1.src = "./imgs/maleCharacter_right1.png";
+		this.maleCharacter_right2 = new Image();
+		this.maleCharacter_right2.src = "./imgs/maleCharacter_right2.png";
+		this.maleCharacter_right3 = new Image();
+		this.maleCharacter_right3.src = "./imgs/maleCharacter_right3.png";
+
+		//Imagens dos NPCs masculinos sem puzzle
+		this.male_NPC1 = new Image();
+		this.male_NPC1.src = "./imgs/male_NPC1.png";
+		this.male_NPC2 = new Image();
+		this.male_NPC2.src = "./imgs/male_NPC2.png";
+		this.male_NPC3 = new Image();
+		this.male_NPC3.src = "./imgs/male_NPC3.png";
+		this.male_NPC4 = new Image();
+		this.male_NPC4.src = "./imgs/male_NPC4.png";						
+
+		//Imagens dos NPCs femininos sem puzzle
+		this.female_NPC1 = new Image();
+		this.female_NPC1.src = "./imgs/female_NPC1.png";
+		this.female_NPC2 = new Image();
+		this.female_NPC2.src = "./imgs/female_NPC2.png";
+
+		//Container de diálogos..etc
 		this.dialogue_background = new Image();
-		this.dialogue_background.src = "./imgs/dialogue_background.png";		
-		this.grama_solo = new Image();
-		this.grama_solo.src = "./imgs/grama_solo.png";
-		this.terra_solo = new Image();
-		this.terra_solo.src = "./imgs/terra_solo.png";
-		this.agua_solo = new Image();
-		this.agua_solo.src = "./imgs/agua_solo.png";	
-		this.grama2 = new Image();
-		this.grama2.src = "./imgs/grama2.png";
-		this.grama3 = new Image();
-		this.grama3.src = "./imgs/grama3.png";
-		this.grama4 = new Image();
-		this.grama4.src = "./imgs/grama4.png";
-		this.grama5 = new Image();
-		this.grama5.src = "./imgs/grama5.png";
-		this.grama6 = new Image();
-		this.grama6.src = "./imgs/grama6.png";
+		this.dialogue_background.src = "./imgs/dialogue_background.png";
+
+		//Grama		
+		this.grass_solo = new Image();
+		this.grass_solo.src = "./imgs/grass_solo.png";
+		this.strong_grass_solo = new Image();
+		this.strong_grass_solo.src = "./imgs/strong_grass_solo.png";
+
+		//Terra	
+		this.land_solo = new Image();
+		this.land_solo.src = "./imgs/land_solo.png";
+
+		//Água
+		this.strong_water_solo = new Image();
+		this.strong_water_solo.src = "./imgs/strong_water_solo.png";		
+		this.water_solo = new Image();
+		this.water_solo.src = "./imgs/water_solo.png";
+		this.water_diag_left = new Image();
+		this.water_diag_left.src = "./imgs/water_diag_left.png";
+		this.water_diag_right = new Image();
+		this.water_diag_right.src = "./imgs/water_diag_right.png";
+
+		//Plantas comuns e aquáticas
 		this.flower = new Image();
 		this.flower.src = "./imgs/flower.png";
+		this.flower2 = new Image();
+		this.flower2.src = "./imgs/flower2.png";
+		this.flower3 = new Image();
+		this.flower3.src = "./imgs/flower3.png";
+		this.waterPlant = new Image();
+		this.waterPlant.src = "./imgs/waterPlant.png";
+		this.waterPlant2 = new Image();
+		this.waterPlant2.src = "./imgs/waterPlant2.png";
+
+		//Cerca								
 		this.fence_left = new Image();
 		this.fence_left.src = "./imgs/fence_left.png";
 		this.fence_solo = new Image();
 		this.fence_solo.src = "./imgs/fence_solo.png";
+		this.fence_vertical = new Image();
+		this.fence_vertical.src = "./imgs/fence_vertical.png";
+
+		//NPCs com Puzzle		
 		this.mario = new Image();
 		this.mario.src = "./imgs/Mario.png";
 		this.marioBody = new Image();
@@ -132,8 +237,12 @@ $(document).ready(function() {
 		this.sofiaBody.src = "./imgs/sofiaBody.png";		
 		this.bruno = new Image();
 		this.bruno.src = "./imgs/Bruno.png";
-		this.taya = new Image();
-		this.taya.src = "./imgs/taya.png";
+		this.brunoBody = new Image();
+		this.brunoBody.src = "./imgs/brunoBody.png";		
+		this.heloisa = new Image();
+		this.heloisa.src = "./imgs/Heloisa.png";
+		this.heloisaBody = new Image();
+		this.heloisaBody.src = "./imgs/heloisaBody.png";		
 		this.jorge = new Image();
 		this.jorge.src = "./imgs/Jorge.png";
 		this.jorgeBody = new Image();
@@ -141,7 +250,9 @@ $(document).ready(function() {
 		this.ronaldo = new Image();
 		this.ronaldo.src = "./imgs/Ronaldo.png";
 		this.ronaldoBody = new Image();
-		this.ronaldoBody.src = "./imgs/ronaldoBody.png";				
+		this.ronaldoBody.src = "./imgs/ronaldoBody.png";
+
+		//Casa				
 		this.house_solo = new Image();
 		this.house_solo.src = "./imgs/house_solo.png";
 		this.window = new Image();
@@ -166,8 +277,42 @@ $(document).ready(function() {
 		this.roof_top_left.src = "./imgs/roof_top_left.png";
 		this.roof_top_right = new Image();
 		this.roof_top_right.src = "./imgs/roof_top_right.png";
-		this.bridge_top = new Image();
-		this.bridge_top.src = "./imgs/bridge_top.png";									
+
+		//Ponte
+		this.bridge_top_left = new Image();
+		this.bridge_top_left.src = "./imgs/bridge_top_left.png";
+		this.bridge_top_center = new Image();
+		this.bridge_top_center.src = "./imgs/bridge_top_center.png";
+		this.bridge_top_right = new Image();
+		this.bridge_top_right.src = "./imgs/bridge_top_right.png";
+		this.bridge_left_bottom = new Image();
+		this.bridge_left_bottom.src = "./imgs/bridge_left_bottom.png";
+		this.bridge_left_center = new Image();
+		this.bridge_left_center.src = "./imgs/bridge_left_center.png";
+		this.bridge_left_top = new Image();
+		this.bridge_left_top.src = "./imgs/bridge_left_top.png";								
+
+		//Ávores e moitas
+		this.halfTree = new Image();
+		this.halfTree.src = "./imgs/halfTree.png";
+		this.bush = new Image();
+		this.bush.src = "./imgs/bush.png";
+		this.tree = new Image();
+		this.tree.src = "./imgs/tree.png";
+
+		//Animais
+		this.sheep_front = new Image();
+		this.sheep_front.src = "./imgs/sheep_front.png";
+		this.sheep_right = new Image();
+		this.sheep_right.src = "./imgs/sheep_right.png";
+		this.sheep_left = new Image();
+		this.sheep_left.src = "./imgs/sheep_left.png";
+		this.chick_front = new Image();
+		this.chick_front.src = "./imgs/chick_front.png";
+		this.chick_left = new Image();
+		this.chick_left.src = "./imgs/chick_left.png";
+		this.chick_right = new Image();
+		this.chick_right.src = "./imgs/chick_right.png";		
 	}
 
 	$(document).keydown(function(e){
@@ -227,6 +372,7 @@ $(document).ready(function() {
 					puzzle.puzzleMaze.time();				}
 				if(!player.profile.isOn && !npc.dialogue.isOn && !puzzle.isOn) {
 					player.profile.isOn = true;
+					alert(player.x + " " + player.y);
 					break;
 				} else {
 					player.profile.isOn = false;
@@ -235,7 +381,20 @@ $(document).ready(function() {
 
 			case 80:
 				if(!puzzle.pause && puzzle.isOn) {
-					puzzle.pause = true;
+					if(!puzzle.puzzlePong.intro &&
+						 !puzzle.puzzlePong.outro &&
+						 !puzzle.puzzleFishing.intro && 
+						 !puzzle.puzzleFishing.outro &&
+						 !puzzle.puzzleBreakout.intro &&
+						 !puzzle.puzzleBreakout.outro &&
+						 !puzzle.puzzleFlappyBird.intro &&
+						 !puzzle.puzzleFlappyBird.outro &&
+						 !puzzle.puzzleGuitarHero.intro &&
+						 !puzzle.puzzleGuitarHero.outro &&
+						 !puzzle.puzzleMaze.intro &&
+						 !puzzle.puzzleMaze.outro) {
+						puzzle.pause = true;
+					}
 				} else {
 					puzzle.pause = false;
 				}
@@ -323,24 +482,57 @@ $(document).ready(function() {
 					puzzle.isOn = false;
 				}
 				if(puzzle.puzzlePong.outro) {
-					puzzle.puzzlePong.outro = false;
 					puzzle.puzzlePong.exit();
-				} else if(puzzle.puzzleFishing.outro) {
-					puzzle.puzzleFishing.outro = false;
+					puzzle.puzzlePong.outro = false;
+				} 
+				if(puzzle.puzzleFishing.outro) {
+					puzzle.puzzleFishing.gameOver();
 					puzzle.puzzleFishing.exit();					
-				} else if(puzzle.puzzleFlappyBird.outro) {
-					puzzle.puzzleFlappyBird.outro = false;
+					puzzle.puzzleFishing.outro = false;
+				} 
+				if(puzzle.puzzleFlappyBird.outro) {
+					puzzle.puzzleFlappyBird.gameOver();
 					puzzle.puzzleFlappyBird.exit();					
-				} else if(puzzle.puzzleBreakout.outro) {
-					puzzle.puzzleBreakout.outro = false;
+					puzzle.puzzleFlappyBird.outro = false;
+				} 
+				if(puzzle.puzzleBreakout.outro) {
 					puzzle.puzzleBreakout.exit();					
-				} else if(puzzle.puzzleGuitarHero.outro) {
-					puzzle.puzzleGuitarHero.outro = false;
+					puzzle.puzzleBreakout.outro = false;
+				} 
+				if(puzzle.puzzleGuitarHero.outro) {
+					puzzle.puzzleGuitarHero.gameOver();
 					puzzle.puzzleGuitarHero.exit();					
-				} else if(puzzle.puzzleMaze.outro) {
-					puzzle.puzzleMaze.outro = false;
+					puzzle.puzzleGuitarHero.outro = false;
+				} 
+				if(puzzle.puzzleMaze.outro) {
+					puzzle.puzzleMaze.gameOver();
 					puzzle.puzzleMaze.exit();					
-				}							
+					puzzle.puzzleMaze.outro = false;
+				}	
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Heloisa") {
+					puzzle.puzzlePong.gameOver();
+					puzzle.pause = false;
+				} 
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Jorge") {
+					puzzle.pause = false;
+					puzzle.puzzleFishing.gameOver();
+				} 
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Sofia") {
+					puzzle.puzzleBreakout.gameOver();
+					puzzle.pause = false;
+				} 
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Mario") {
+					puzzle.puzzleFlappyBird.gameOver();
+					puzzle.pause = false;
+				} 
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Bruno") {
+					puzzle.puzzleGuitarHero.gameOver();
+					puzzle.pause = false;
+				} 
+				if(puzzle.pause && npc.array[player.searchNPC()].name == "Ronaldo") {
+					puzzle.puzzleMaze.gameOver();
+					puzzle.pause = false;
+				}
 		}
 	})
 
@@ -394,38 +586,95 @@ $(document).ready(function() {
 	class Player {
 		constructor() {
 			this.name = "Cecil";
-			this.x = 310;
-			this.y = 200;
-			this.width = 25;
-			this.height = 25;
+			this.x = 1075;
+			this.y = 2195;
+			this.width = 20;
+			this.height = 30;
 			this.level = 0;
 			this.actualXp = 0;
 			this.xpCalc = 0;
 			this.storageXp = 0;
-			this.levelMath = 0;
-			this.levelPhysicalEducation = 0;
-			this.levelEnglish = 0;
-			this.color = "Black";
 			this.speed = 8;
 			this.moveLeft = this.moveUp = this.moveRight = this.moveDown = false;					
 			this.talking = false;
+			this.animateCount = 1;
 		}
 
 		draw() {
-			DrawRect(this.color, this.x, this.y, this.width, this.height);
+			if(!this.moveLeft && !this.moveUp && !this.moveRight && !this.moveDown) {
+				RenderImage(img.maleCharacter_front1, this.x, this.y, this.width, this.height);
+			} else if(this.moveLeft) {
+					if(this.animateCount == 1) {
+						RenderImage(img.maleCharacter_left1, this.x, this.y, this.width, this.height);
+						setTimeout(function() {;
+						player.animateCount = 2;
+					}, 200)					
+				} else if(this.animateCount == 2) {
+						RenderImage(img.maleCharacter_left2, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 3;
+					}, 200)				
+				} else if(this.animateCount == 3) {
+						RenderImage(img.maleCharacter_left3, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 1;
+					}, 200)				
+				}
+			} else if(this.moveUp) {
+					if(this.animateCount == 1) {
+						RenderImage(img.maleCharacter_back2, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 2;
+					}, 200)					
+				} else if(this.animateCount >= 2) {
+						RenderImage(img.maleCharacter_back3, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 1;
+					}, 200)				
+				}
+			} else if(this.moveRight) {
+					if(this.animateCount == 1) {
+						RenderImage(img.maleCharacter_right1, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 2;
+					}, 200)					
+				} else if(this.animateCount == 2) {
+						RenderImage(img.maleCharacter_right2, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 3;
+					}, 200)				
+				} else if(this.animateCount == 3) {
+						RenderImage(img.maleCharacter_right3, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 1;
+					}, 200)				
+				}
+			} else if(this.moveDown) {
+					if(this.animateCount == 1) {
+						RenderImage(img.maleCharacter_front2, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 2;
+					}, 200)					
+				} else if(this.animateCount >= 2) {
+						RenderImage(img.maleCharacter_front3, this.x, this.y, this.width, this.height);
+						setTimeout(function() {
+						player.animateCount = 1;
+					}, 200)				
+				}
+			}				
 		}
 
 		move() {
 			if(this.moveLeft && this.x >= 0) {
 				this.x -= this.speed;
 			}
-			if(this.moveUp && this.y >= 0) {
+			else if(this.moveUp && this.y >= 0) {
 				this.y -= this.speed;
 			}
-			if(this.moveRight && this.x + this.width <= scenario.width) {
+			else if(this.moveRight && this.x + this.width <= scenario.width) {
 				this.x += this.speed;
 			}
-			if(this.moveDown && this.y + this.height <= scenario.height) {
+			else if(this.moveDown && this.y + this.height <= scenario.height) {
 				this.y += this.speed;
 			}
 		}
@@ -535,17 +784,18 @@ $(document).ready(function() {
 				//Imagem
 				//Profissão
 				//Nível de amizade
-				//Precisa de ajuda?
+				//Possui puzzle?
 
+			//NPCs com puzzle
 			this.array.push(new NPC(
 				"Heloisa", 
 				"Oi, " + player.name + ", quer brincar comigo?", 
-				img.sofiaBody, 
+				img.heloisaBody, 
 				400, 
 				100, 
 				25, 
-				25, 
-				img.taya,
+				33, 
+				img.heloisa,
 				"",
 				"1",
 				true
@@ -558,21 +808,21 @@ $(document).ready(function() {
 				400, 
 				270, 
 				25, 
-				25, 
+				33, 
 				img.mario,
 				"Agricultor",
 				"1",
 				true
-			));
+			));				
 
 			this.array.push(new NPC(
 				"Sofia", 
-				"Oi, " + player.name + ", tudo bem?", 
+				"Que linda floresta, ela me deixa tão animada! Você quer brincar, " + player.name + "?", 
 				img.sofiaBody, 
-				200, 
-				500, 
+				1095, 
+				2200, 
 				25, 
-				25, 
+				33, 
 				img.sofia,
 				"Comerciante",
 				"1",
@@ -582,11 +832,11 @@ $(document).ready(function() {
 			this.array.push(new NPC(
 				"Bruno", 
 				"Bom dia!",
-				img.marioBody,
+				img.brunoBody,
 				240, 
 				200, 
 				25, 
-				25, 
+				33, 
 				img.bruno,
 				"Músico",
 				"1",
@@ -597,10 +847,10 @@ $(document).ready(function() {
 				"Jorge", 
 				"Bom dia, " + player.name + "! Gostaria de me ajudar a pescar?",
 				img.jorgeBody, 
-				300, 
-				300, 
+				2275, 
+				2040, 
 				25, 
-				25, 
+				33, 
 				img.jorge,
 				"Pescador",
 				"1",
@@ -612,21 +862,134 @@ $(document).ready(function() {
 				"Eae, " + player.name + "! Tenho um desafio para você, quer jogar?",
 				img.ronaldoBody, 
 				500, 
-				300, 
+				250, 
 				25, 
-				25, 
+				33, 
 				img.ronaldo,
 				"Explorador",
 				"1",
 				true
+			));	
+
+			//NPCs sem puzzle
+			this.array.push(new NPC(
+				"Ricardo", 
+				"O maior desafio é sempre o último!", 
+				img.marioBody, 
+				600, 
+				920, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Guilherme", 
+				"Olha como o dia está lindo!", 
+				img.marioBody, 
+				740, 
+				1500, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Maicon", 
+				"O maior desafio é sempre o último!", 
+				img.male_NPC1, 
+				1450, 
+				1100, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Renan", 
+				"Como andam suas aventuras, " + player.name + " ?", 
+				img.male_NPC2, 
+				1750, 
+				1200, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Gandalf", 
+				"Você não passará!!!", 
+				img.male_NPC3, 
+				224, 
+				1344, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
 			));			
+
+			this.array.push(new NPC(
+				"Mateus", 
+				"O novato pergunta sem ler, e o veterano lê sem perguntar!", 
+				img.male_NPC4, 
+				111, 
+				1999, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));			
+
+			this.array.push(new NPC(
+				"Michele", 
+				"Veja, o rio está lindo hoje!", 
+				img.female_NPC1, 
+				2024, 
+				2068, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));
+
+			this.array.push(new NPC(
+				"Raquel", 
+				"Eu amo os animais!", 
+				img.female_NPC2, 
+				842, 
+				1927, 
+				25, 
+				33, 
+				img.mario,
+				"",
+				"",
+				false
+			));														
 		}
 
 		draw() {
 			for (var i = 0; i < this.array.length; i++) {
 				var currentNPC = this.array[i];
-				RenderImage(currentNPC.body, currentNPC.x, currentNPC.y, 30, 30);
-				scenario.blockRectangle(player, currentNPC.x, currentNPC.y, 30, 30);
+				RenderImage(currentNPC.body, currentNPC.x, currentNPC.y, currentNPC.width, currentNPC.height);
+				scenario.blockRectangle(player, currentNPC.x, currentNPC.y, currentNPC.width, currentNPC.height);
 			}
 		}
 	}	
@@ -652,15 +1015,18 @@ $(document).ready(function() {
 		draw() {
 			if(player.searchNPC() != null) {
 				RenderImage(this.img, this.x, this.y, this.width, this.height);
-				ctx.fillStyle = "Black";			
+				ctx.fillStyle = "White";
+				ctx.shadowColor = "Black";
+				ctx.shadowBlur = 3;						
 				ctx.font = "28px Arial";
 				ctx.textAlign = "left";
-				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 20, this.y + 30);
-				ctx.font = "25px Cursive";
+				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 20, this.y + 40);
+				ctx.font = "23px Cursive";
 				ctx.fillText(npc.array[player.searchNPC()].message, this.x + 15, this.y + 70);
+				ctx.shadowBlur = 0;
 				if(npc.array[player.searchNPC()].hasPuzzle) {
 					this.answer();					
-				}				
+				}
 			}
 		}
 	}
@@ -677,12 +1043,16 @@ $(document).ready(function() {
 		draw() {
 			if(player.searchNPC() != null) {				
 				RenderImage(this.img, this.x, this.y, this.width, this.height);
-				ctx.fillStyle = "Black";			
+				ctx.fillStyle = "White";
+				ctx.shadowColor = "Black";
+				ctx.shadowBlur = 3;
 				ctx.font = "20px Arial";
 				ctx.textAlign = "left";
-				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 10, this.y + 25);
+				ctx.fillText(npc.array[player.searchNPC()].name, this.x + 10, this.y + 28);
+				ctx.shadowBlur = 0;
 				RenderImage(npc.array[player.searchNPC()].img, this.x + 10, this.y + 35, this.width / 5, this.height - 45);
 				ctx.font = "18px Cursive";
+				ctx.shadowBlur = 3;
 				if(npc.array[player.searchNPC()].profession != "") {
 					ctx.fillText("Profissão: " + npc.array[player.searchNPC()].profession, 395, 495);
 					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 395, 517);
@@ -690,110 +1060,131 @@ $(document).ready(function() {
 					ctx.fillText("Nível de Amizade: " + npc.array[player.searchNPC()].friendlyLevel, 395, 495);
 				}
 				ctx.fillStyle = "Red";
-				ctx.fillText("Pressione Q para conversar", 460, 580);
+				ctx.shadowBlur = 0;
+				ctx.fillText("Pressione Q para conversar", 460, 576);
 			}		
 		}
 	}
+
+	class SignalNPC {
+		constructor() {
+			this.width = 15;
+			this.height = 15;
+			this.color = "Red";
+		}
+
+		draw() {
+			for(var i = 0; i < npc.array.length; i++) {
+				this.currentNPC = npc.array[i];
+				if(this.currentNPC.hasPuzzle) {
+					DrawRect(this.color, this.currentNPC.x + 5, this.currentNPC.y - 15, this.width, this.height);
+					ctx.font = "15px Cursive";
+					ctx.fillStyle = "White";
+					ctx.fillText("?", this.currentNPC.x + 9, this.currentNPC.y - 3);
+				}
+			}	
+		}
+	}	
 
 	class Scenario {
 		constructor() {
 			this.tileSize = 25;			
 			this.map = [
 				[11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11],
-				[11,18,26,26,26,26,26,18,18,18,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,18,18,18,18,18,18,18,18,18,22,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,33,30,30,30,30,30,36,25,23,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,31,17,17,17,17,17,32,24,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,34,29,29,29,29,29,35,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,14,14,14,14,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,14,16,14,14,14,16,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,14,14,14,28,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,14,14,14,15,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,18,18,22,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,25,25,25,27,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,18,18,21,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[20,20,20,20,20,20,20,20,37,37,37,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[20,20,20,20,20,20,20,20,37,37,37,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[20,20,20,20,20,20,20,20,37,37,37,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[20,20,20,20,20,20,20,20,37,37,37,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,10,10,10,10,10,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,12,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,33,30,30,30,30,30,36,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,12,12,12,12,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,31,17,17,17,17,17,32,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,34,29,29,29,29,29,35,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,14,14,14,14,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,14,16,14,14,14,16,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,14,14,14,28,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,14,14,14,15,14,14,14,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,12,12,12,20,20,20,20,20,20],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,25,25,25,25,25,25,25,25,25,27,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,26,26,26,26,26,26,26,26,18,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,33,30,30,30,30,30,36,18,18,18,18,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,31,17,17,17,17,17,32,18,18,18,18,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,34,29,29,29,29,29,35,18,18,18,18,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,12,12,12,12,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,14,14,14,14,18,18,18,18,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,12,12,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,16,14,14,14,16,14,18,18,18,18,18,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,12,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,28,14,14,14,18,18,18,18,18,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,12,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,15,14,14,14,18,18,18,18,18,18,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,18,18,18,18,18,18,18,10,18,18,18,18,18,18,18,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,25,25,25,25,25,25,25,38,10,25,25,25,25,25,25,25,27,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,33,30,30,30,30,30,36,10,33,30,30,30,30,30,36,18,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,31,17,17,17,17,17,32,10,31,17,17,17,17,17,32,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,34,29,29,29,29,29,35,10,34,29,29,29,29,29,35,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,14,14,14,14,10,14,14,14,14,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,16,14,14,14,16,14,10,14,16,14,14,14,16,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,28,14,14,14,10,14,14,14,28,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,14,14,14,15,14,14,14,10,14,14,14,15,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,26,26,10,10,10,26,26,10,26,26,10,10,10,26,26,26,26,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,26,26,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,26,26,10,10,10,26,26,10,26,26,10,10,10,26,26,26,26,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-				[11,26,26,26,26,26,26,26,26,10,26,26,26,26,26,26,26,26,26,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,43,43,43,43,43,43,43,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,48,48,48,64,64,64,64,64,64,47,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,11],
+				[11,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,48,48,48,64,64,64,64,64,47,64,47,47,47,64,64,64,46,64,64,64,47,64,64,64,64,64,64,64,47,64,64,64,64,64,64,64,64,64,64,47,64,64,64,11],
+				[11,53,33,30,30,30,30,30,36,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,64,64,64,64,64,64,47,47,47,47,47,64,46,64,47,47,47,64,64,64,64,64,64,64,47,47,47,47,47,64,64,64,64,64,47,47,64,64,64,11],
+				[11,53,31,17,17,17,17,17,32,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,64,64,64,64,64,64,64,47,47,47,64,46,46,64,47,47,64,64,64,64,64,64,64,64,47,47,64,64,64,64,64,64,47,47,47,64,64,64,11],
+				[11,53,34,29,29,29,29,29,35,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,48,48,48,48,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,47,47,47,64,64,64,64,11],
+				[11,53,14,14,14,14,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,64,64,64,64,64,64,64,64,64,64,64,64,64,64,47,64,64,64,64,64,64,64,64,64,64,64,47,47,47,64,64,64,64,11],
+				[11,53,14,16,14,14,14,16,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,48,48,48,64,64,64,64,64,64,64,64,64,64,47,47,47,64,64,64,64,64,46,64,64,64,64,64,64,64,46,46,64,11],
+				[11,53,14,14,14,28,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,48,45,45,45,45,45,48,48,64,64,64,64,46,64,64,64,64,47,47,47,64,64,64,64,64,46,46,64,64,64,64,64,64,46,46,64,11],
+				[11,53,14,14,14,15,14,14,14,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,48,45,45,45,45,45,45,45,64,64,64,46,46,64,64,64,47,64,47,64,64,64,64,64,46,46,64,64,64,64,64,64,64,64,64,11],
+				[11,44,44,44,18,10,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,48,45,45,45,45,45,45,45,64,64,46,46,64,64,64,64,64,64,64,64,64,64,64,46,46,46,64,64,64,64,64,64,48,48,11],
+				[11,25,25,25,27,10,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,48,48,64,64,46,64,64,64,64,64,64,64,64,64,64,64,64,64,46,46,64,64,64,64,64,45,48,48,11],
+				[11,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,48,45,45,45,48,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,46,64,64,64,64,45,45,45,45,48,11],
+				[20,20,20,20,20,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,48,48,45,45,48,64,64,64,64,64,64,64,64,64,64,46,46,46,64,64,64,64,64,64,64,64,64,48,48,45,10,10,11],
+				[20,20,20,20,20,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,64,64,64,46,64,64,64,64,64,64,46,46,46,64,64,64,64,64,64,64,45,45,48,10,10,10,10,11],
+				[20,20,20,20,20,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,64,64,46,46,64,64,64,64,64,64,46,46,64,64,64,64,64,48,48,45,45,10,10,10,10,10,11],
+				[20,20,20,20,20,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,64,64,46,46,64,64,64,64,64,64,46,46,64,64,64,64,45,48,45,45,10,10,10,10,10,10,11],
+				[11,48,48,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,64,64,64,64,64,64,64,64,64,64,64,64,64,45,45,45,45,45,10,10,10,10,10,10,10,10,11],
+				[11,48,48,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,64,64,64,64,64,64,64,64,64,64,64,45,45,45,45,45,45,45,10,10,10,10,10,10,10,10,10,11],
+				[11,48,48,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,64,64,64,64,48,48,64,64,64,64,45,45,45,45,45,48,48,48,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,64,64,45,45,48,48,45,64,64,45,45,45,45,45,48,48,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,10,45,45,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,46,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,45,45,45,48,48,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,46,46,46,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,45,45,45,45,48,48,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,46,46,46,46,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,47,47,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,47,47,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,47,47,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,47,47,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,47,64,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,64,46,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,64,46,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,46,46,64,64,64,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,46,46,64,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,46,46,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,64,64,45,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,48,48,45,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,48,48,45,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,48,48,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,27,18,18,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,54,18,18,18,18,18,56,18,18,18,18,18,56,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,25,25,25,25,25,25,25,25,25,27,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,56,18,18,18,18,55,18,18,54,18,18,18,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,18,18,18,18,18,18,18,52,10,10,10,10,18,18,52,18,55,18,18,55,18,18,56,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,49,18,51,18,18,51,18,18,52,10,10,10,10,18,18,52,18,18,54,18,18,18,18,18,18,18,18,56,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,18,18,18,50,18,50,18,52,10,10,10,10,18,18,52,18,18,18,18,18,55,18,18,18,18,18,18,18,18,18,18,56,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,49,18,18,18,18,18,18,52,10,10,10,10,18,18,52,55,18,18,18,18,18,18,18,18,18,18,18,54,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,49,18,18,50,18,49,18,18,52,10,10,10,10,18,18,52,18,18,54,18,18,18,56,18,18,18,18,18,18,18,18,55,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,18,18,18,18,18,18,18,18,18,52,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,55,18,18,18,54,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,43,33,30,30,30,30,30,36,18,52,10,10,10,10,18,18,18,55,18,18,18,18,18,18,56,18,18,54,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,39,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,43,31,17,17,17,17,17,32,18,52,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,60,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,43,34,29,29,29,29,29,35,18,52,10,10,10,10,18,18,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,27,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,43,14,14,14,14,14,14,14,18,52,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,44,14,16,14,14,14,16,14,18,52,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,44,14,14,14,28,14,14,14,18,52,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,44,14,14,14,15,14,14,14,18,52,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,44,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,44,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20],
+				[11,44,18,18,18,18,18,18,18,18,52,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20],
+				[11,44,18,18,18,18,18,18,18,18,52,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,27,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20],
+				[11,25,25,25,25,25,25,25,25,25,27,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,51,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,49,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,51,18,18,18,18,18,10,10,10,10,10,10,10,10,63,63,63,63,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,49,18,18,18,49,18,18,18,49,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,62,62,62,62,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,18,18,50,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,61,61,61,61,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,50,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,51,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,50,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,25,25,25,25,25,25,25,25,25,27,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,51,18,18,18,18,18,18,18,49,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,43,43,43,43,44,44,44,44,44,18,10,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,33,30,30,30,30,30,36,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,50,18,18,18,50,18,18,18,18,18,18,49,18,18,18,18,51,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,31,17,17,17,17,17,32,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,18,18,52,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,52,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,34,29,29,29,29,29,35,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,18,18,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,27,18,18,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,14,14,14,14,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,16,14,14,14,16,14,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,57,58,59,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,28,14,14,14,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,57,58,59,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,15,14,14,14,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,57,58,59,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,57,58,59,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,18,18,18,18,18,18,18,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,53,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,53,10,10,10,10,10,10,10,10,10,10,10,10,53,53,53,10,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,18,18,18,18,18,18,18,10,18,18,18,18,18,18,18,10,10,10,10,10,10,10,10,10,10,10,10,53,53,53,53,53,10,10,10,10,10,10,53,53,53,53,53,53,53,53,10,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,57,58,59,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,25,25,25,25,25,25,25,38,10,25,25,25,25,25,25,25,27,10,10,10,10,10,10,10,10,10,10,53,53,53,53,53,53,53,53,53,10,10,10,53,53,53,53,26,26,53,53,53,10,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,33,30,30,30,30,30,36,10,33,30,30,30,30,30,36,43,10,10,10,10,10,10,10,10,10,10,53,53,43,53,26,53,26,53,53,10,10,18,18,18,18,53,44,44,43,53,53,53,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,31,17,17,17,17,17,32,10,31,17,17,17,17,17,32,43,53,10,10,10,10,10,10,10,10,53,53,43,44,43,43,44,44,18,18,18,18,18,18,18,18,18,44,43,43,53,53,53,10,10,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,34,29,29,29,29,29,35,10,34,29,29,29,29,29,35,43,53,10,10,10,10,10,10,10,10,53,53,53,43,43,44,18,18,18,18,18,18,18,18,18,18,18,18,44,43,53,53,53,10,53,10,10,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,14,14,14,14,10,14,14,14,14,14,14,14,43,53,10,10,10,10,10,10,10,10,53,53,44,43,44,18,18,18,18,18,18,18,18,18,18,18,18,18,18,44,44,53,53,53,53,53,53,10,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,16,14,14,14,16,14,10,14,16,14,14,14,16,14,43,53,10,10,10,10,10,10,10,10,53,53,44,26,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,43,44,53,53,53,53,53,53,53,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,28,14,14,14,10,14,14,14,28,14,14,14,43,53,10,10,10,10,10,10,10,53,53,53,26,26,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,44,53,44,53,44,53,53,53,10,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,26,14,14,14,15,14,14,14,10,14,14,14,15,14,14,14,43,53,10,10,10,10,10,10,10,53,53,53,53,43,18,18,64,64,64,18,18,64,64,64,64,64,18,18,18,18,26,44,43,26,44,26,26,53,53,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,53,53,53,10,10,10,18,18,10,18,18,10,10,10,18,18,18,18,10,10,10,10,10,10,53,53,53,53,53,43,44,43,64,64,64,64,64,64,46,64,64,64,64,18,18,44,44,26,43,26,43,26,53,53,53,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,53,53,53,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,53,53,53,53,26,44,44,64,64,47,64,64,64,46,46,64,64,64,46,64,26,26,43,43,44,43,44,53,53,53,53,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,53,53,53,10,10,10,18,18,10,18,18,10,10,10,43,43,43,43,10,10,10,10,10,10,53,53,53,53,26,43,44,64,47,47,47,64,46,46,46,64,46,46,46,64,47,64,43,43,43,43,44,53,53,53,53,10,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
+				[11,53,53,53,44,44,44,44,44,10,43,43,43,43,43,44,44,44,44,10,10,10,10,10,53,53,53,53,44,44,43,64,47,47,47,47,64,46,46,46,64,64,64,64,64,47,47,64,26,26,44,53,53,53,53,53,53,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
 				[11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,20,20,20,20,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11]];
 				
 				this.height = this.map.length * this.tileSize;
@@ -834,8 +1225,8 @@ $(document).ready(function() {
 						DrawRect("#2E8B57", this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
 					} else if(this.tile == 12) {
-						
-						RenderImage(img.agua_solo, this.x, this.y, this.tileSize, this.tileSize);							
+						//Estradas
+						DrawRect("#ffd966", this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 13) {
 						//Telhados das casas								
 						DrawRect("lightgray", this.x, this.y, this.tileSize, this.tileSize);
@@ -856,14 +1247,14 @@ $(document).ready(function() {
 						DrawRect("gray", this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 18) {
 						//Grama						
-						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 19) {
 						//Cercas						
 						DrawRect("#ffcc00", this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 20) {
 						//Água						
-						RenderImage(img.agua_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);
 					} else if(this.tile == 21) {
 						//Grama						
@@ -879,64 +1270,181 @@ $(document).ready(function() {
 						RenderImage(img.grama5, this.x, this.y, this.tileSize, this.tileSize);						
 					} else if(this.tile == 25) {
 						//Grama						
-						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
 						RenderImage(img.fence_left, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);	
 					} else if(this.tile == 26) {
 						//Planta						
-						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
 						RenderImage(img.flower, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 27) {
-						//Planta						
-						RenderImage(img.terra_solo, this.x, this.y, this.tileSize, this.tileSize);
+						//Cerca com terra						
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
 						RenderImage(img.fence_solo, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x - 13, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 28) {
-																	
+						//Porta											
 						RenderImage(img.door2, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 29) {
-						//Planta												
+						//Telhado inferior												
 						RenderImage(img.roof_bottom, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 30) {
-						//Planta												
+						//Telhado superior												
 						RenderImage(img.roof_top, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 31) {
-						//Planta												
+						//Telhado lateral esquerda												
 						RenderImage(img.roof_left, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 32) {
-						//Planta												
+						//Telhado lateral direita			
 						RenderImage(img.roof_right, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 33) {
-						//Planta												
+						//Telhado superior esquerda				
 						RenderImage(img.roof_top_left, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 34) {
-						//Planta												
+						//Telhado inferior esquerda			
 						RenderImage(img.roof_bottom_left, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 35) {
-						//Planta												
+						//Telhado inferior direita			
 						RenderImage(img.roof_bottom_right, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
 					} else if(this.tile == 36) {
-						//Planta												
+						//Telhado superior direta												
 						RenderImage(img.roof_top_right, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
-					} else if(this.tile == 37) {
-						//Planta												
-						RenderImage(img.bridge_top, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 37) {			
 					} else if(this.tile == 38) {
 						//Cerca com grama solo												
-						RenderImage(img.grama_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
 						RenderImage(img.fence_solo, this.x, this.y, this.tileSize, this.tileSize);
 						this.blockRectangle(player, this.x - 13, this.y, this.tileSize, this.tileSize);				
-					}   
+					} else if(this.tile == 39) {
+						//Agua diagonal esquerda												
+						RenderImage(img.water_diag_left, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize - 5, this.tileSize);				
+					} else if(this.tile == 40) {
+						//Árvore cortada											
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.halfTree, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 41) {
+						//Moita											
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bush, this.x, this.y, 20, 20);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 42) {
+						//Ávore											
+						RenderImage(img.strong_grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.tree, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 43) {
+						//Flor2											
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.flower2, this.x, this.y, 20, 20);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 44) {
+						//Flor3											
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.flower3, this.x, this.y, 20, 20);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 45) {
+						//Grama escura											
+						RenderImage(img.strong_grass_solo, this.x, this.y, this.tileSize, this.tileSize);		
+					} else if(this.tile == 46) {
+						//Planta da água
+						RenderImage(img.strong_water_solo, this.x, this.y, this.tileSize, this.tileSize);											
+						RenderImage(img.waterPlant, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 47) {
+						//Planta da água menor
+						RenderImage(img.strong_water_solo, this.x, this.y, this.tileSize, this.tileSize);											
+						RenderImage(img.waterPlant2, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 48) {
+						//Flor com fundo escuro
+						RenderImage(img.strong_grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.flower, this.x, this.y, 20, 20); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 49) {
+						//Ovelha frente
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.sheep_front, this.x, this.y, 20, 20); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 50) {
+						//Ovelha esquerda
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.sheep_left, this.x, this.y, 20, 20); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 51) {
+						//Ovelha direita
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.sheep_right, this.x, this.y, 20, 20); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 52) {
+						//Cerca vertical
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.fence_vertical, this.x, this.y, this.tileSize, this.tileSize); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize - 13, this.tileSize);								
+					} else if(this.tile == 53) {
+						//Árvore com grama clara
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.tree, this.x, this.y, this.tileSize, this.tileSize); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 54) {
+						//Galinha frente
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.chick_front, this.x, this.y, 15, 15); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 55) {
+						//Galinha esquerda
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.chick_left, this.x, this.y, 15, 15); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 56) {
+						//Galinha direita
+						RenderImage(img.grass_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.chick_right, this.x, this.y, 15, 15); 
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);								
+					} else if(this.tile == 57) {
+						//Ponte topo esquerda
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_top_left, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 58) {
+						//Ponte topo centro
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_top_center, this.x, this.y, this.tileSize, this.tileSize); 					
+					} else if(this.tile == 59) {
+						//Ponte topo direita
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_top_right, this.x, this.y, this.tileSize, this.tileSize); 							
+					} else if(this.tile == 60) {
+						//Água diagonal direita
+						RenderImage(img.water_diag_right, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize + 5, this.tileSize);						
+					} else if(this.tile == 61) {
+						//Ponte esquerda inferior
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_left_bottom, this.x, this.y, this.tileSize, this.tileSize);					
+					} else if(this.tile == 62) {
+						//Ponte esquerda centro
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_left_center, this.x, this.y, this.tileSize, this.tileSize);				
+					} else if(this.tile == 63) {
+						//Ponte esquerda topo
+						RenderImage(img.water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						RenderImage(img.bridge_left_top, this.x, this.y, this.tileSize, this.tileSize);						
+					} else if(this.tile == 64) {
+						//Água escura
+						RenderImage(img.strong_water_solo, this.x, this.y, this.tileSize, this.tileSize);
+						this.blockRectangle(player, this.x, this.y, this.tileSize, this.tileSize);					
+					}        
 				}
 			}			
 		}
@@ -1083,7 +1591,7 @@ $(document).ready(function() {
 		}
 
 		exit() {
-			puzzle.puzzleFishing = new PuzzleFishing;
+			puzzle.puzzleFishing = new PuzzleFishing();
 			npc.array[4].message = "Obrigado, " + player.name + "! Pegamos muitos peixes hoje. Vamos continuar?";
 			player.levelUp(Math.floor(this.playerScore / 10));
 			puzzle.isOn = false;
@@ -1117,7 +1625,7 @@ $(document).ready(function() {
 				ctx.font = "30px Cursive";				
 				ctx.fillText("Não (ESC)", canvas.width() / 2, 540);
 				ctx.textAlign = "start";				
-			} else if(this.outro) { 
+			} else if(this.outro) {
 				ctx.fillStyle = "Red";
 				ctx.font = "40px Cursive";
 				ctx.textAlign = "center";
@@ -1141,14 +1649,14 @@ $(document).ready(function() {
 					ctx.fillText("Seu recorde atual é: " + puzzle.highestScoreFishing, 390, 200);
 					ctx.fillStyle = "Green";
 					ctx.fillText("Você recebeu " + this.playerScore / 10 + " pontos de experiência", 490, 240);					
-				}				
-			} else {
+				}	
+			} else {			
 				ctx.fillStyle = "Black";
 				ctx.font = "30px Cursive";
 				ctx.fillStyle = "Red";
 				ctx.fillText("Tempo: " + this.timer, 210, this.y + 30);	
 				ctx.fillStyle = "Black";
-				ctx.fillText("Pontos: " + this.playerScore, 210, this.y + 70);			
+				ctx.fillText("Pontos: " + this.playerScore, 210, this.y + 70);					
 				DrawRect(this.playerColor, this.playerX, this.playerY, this.playerWidth, this.playerHeight);
 			}
 		}
@@ -1186,8 +1694,8 @@ $(document).ready(function() {
 			this.ballY = canvas.height() / 2 - this.ballSize / 2;
 			this.ballColor = "Black";			
 			this.ballSpeed = 3;
-			this.ballDirectionX = 0;
-			this.ballDirectionY = 0;
+			this.ballDirectionX = Math.floor(Math.random() * 2);
+			this.ballDirectionY = Math.floor(Math.random() * 2);
 
 			this.enemyWidth = 30;
 			this.enemyHeight = 30;
@@ -1233,7 +1741,8 @@ $(document).ready(function() {
 				 this.ballY <= this.playerY + this.playerHeight &&
 				 this.ballY + this.ballSize >= this.playerY) {
 				this.ballDirectionX = 1;
-				this.ballSpeed += 0.5;
+				this.ballDirectionY = Math.floor(Math.random() * 2);
+				this.ballSpeed += 0.8;
 				this.playerScore += 10;		
 			} 
 			if(this.ballX <= this.enemyX + this.enemyWidth &&
@@ -1241,13 +1750,15 @@ $(document).ready(function() {
 			   this.ballY <= this.enemyY + this.enemyHeight &&
 			   this.ballY + this.ballSize >= this.enemyY) {
 				this.ballDirectionX = 0;
+				this.ballDirectionY = Math.floor(Math.random() * 2);
 			}
+			if(this.ballX <= 205) {		
+				this.gameOver();
+			}			
 		}
 
 		gameOver() {
-			if(this.ballX <= 210) {			
-				this.outro = true;
-			}
+			this.outro = true;
 		}
 
 		exit() {
@@ -1525,8 +2036,8 @@ $(document).ready(function() {
 			this.ballHeight = 10;
 			this.ballX = canvas.width() / 2 - this.ballWidth / 2;
 			this.ballY = 350;
-			this.ballSpeedY = 4;
-			this.ballSpeedX = 2;
+			this.ballSpeedY = 5;
+			this.ballSpeedX = 3;
 			this.ballColor = "Black";
 			this.ballDirectionX = null;
 			this.ballDirectionY = 1;				
@@ -1628,7 +2139,7 @@ $(document).ready(function() {
 				 this.ballX <= this.playerX + this.playerWidth) {
 				this.ballDirectionY = 0;
 				if(this.ballDirectionX == null) {
-					this.ballDirectionX = 1;
+					this.ballDirectionX = Math.floor(Math.random() * 2);
 				}
 			}
 		}
@@ -1642,9 +2153,12 @@ $(document).ready(function() {
 					 this.ballX <= this.currentEnemy.enemyX + this.currentEnemy.enemyWidth &&
 					 this.ballX + this.ballWidth >= this.currentEnemy.enemyX) {
 					this.enemies.splice(this.enemies.indexOf(this.currentEnemy), 1);
+					if(this.enemies.length <= 0) {
+						this.gameOver();
+					}
 					this.playerScore += 10;
-					this.ballSpeedY += Math.floor((Math.random() * 4) + 1) * 10 / 100;
-					this.ballSpeedX += Math.floor((Math.random() * 2) + 1) * 10 / 100;
+					this.ballSpeedY += Math.floor((Math.random() * 5) + 2) * 10 / 100;
+					this.ballSpeedX += Math.floor((Math.random() * 3) + 2) * 10 / 100;
 					if(this.ballY < this.currentEnemy.enemyY) {
 						this.ballDirectionY = 0;
 					} else if(this.ballY > this.currentEnemy.enemyY) {
@@ -1968,7 +2482,7 @@ $(document).ready(function() {
 				[0,1,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1],
 				[0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1]];
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 
 		this.mapHeight = this.map.length * this.tileSize;
 		this.mapWidth = this.map[0].length * this.tileSize;					 
@@ -1984,7 +2498,7 @@ $(document).ready(function() {
 			} else if(puzzle.playerMoveDown) {
 				this.playerY += this.playerSpeed;
 			}
-			if(this.playerX + this.playerSize >= this.mapWidth || this.playerY + this.playerSize >= this.mapHeight) {
+			if(this.playerX + this.playerSize >= this.mapWidth + this.playerSize) {
 				this.gameOver();
 			}
 		}
@@ -1994,7 +2508,7 @@ $(document).ready(function() {
 				if(!puzzle.pause) {
 					puzzle.puzzleMaze.timer -= 1;
 				}				
-				if(puzzle.puzzleMaze.playerScore > 0 && puzzle.puzzleMaze.playerScore > 150 && !puzzle.pause) {
+				if(puzzle.puzzleMaze.playerScore > 150 && !puzzle.pause) {
 					puzzle.puzzleMaze.playerScore -= 20;
 				}
 				if(puzzle.puzzleMaze.timer <= 0) {
@@ -2027,6 +2541,9 @@ $(document).ready(function() {
 			this.map = [];
 			this.outro = true;
 			this.timerSpeed = 6000000;
+			if(this.playerX + this.playerSize < this.mapWidth) {
+				this.playerScore = 0;
+			}
 		}
 
 		exit() {
@@ -2112,7 +2629,7 @@ $(document).ready(function() {
 				ctx.font = "40px Cursive";
 				ctx.fillStyle = "Red";
 				ctx.fillText("Tempo: " + this.timer, 650, 40);
-				ctx.fillText("Pontos: " + this.playerScore, 650, 90);
+				ctx.fillText("Pontos: " + this.playerScore, 650, 80);
 			}
 		}	
 	}
@@ -2176,6 +2693,7 @@ $(document).ready(function() {
 	let npc = new NPC();
 	NPC.prototype.dialogue = new Dialogue();
 	NPC.prototype.infoNPC = new InfoNPC();
+	NPC.prototype.signalNPC = new SignalNPC();
 	let scenario = new Scenario();
 	let puzzle = new Puzzle();
 	Puzzle.prototype.puzzleFishing = new PuzzleFishing();
